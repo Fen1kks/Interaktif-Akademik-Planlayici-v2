@@ -94,12 +94,14 @@ function loadDepartment(code) {
     // Re-render
     render();
     
-    // Draw immediately (initial pass)
-    requestAnimationFrame(scheduleDrawArrows);
+    // Draw immediately (initial pass) to ensure visibility
+    try { drawArrows(); } catch(e) { console.error(e); }
 
     // Recalculate zoom (and redraw) once layout settles
     setTimeout(() => {
         calculateOptimalZoom();
+        // Redundant draw to ensure it sticks after zoom
+        requestAnimationFrame(drawArrows);
     }, 150);
 }
 
