@@ -643,9 +643,13 @@ function drawArrows() {
       
       let hopY = targetY; 
       
+      // Responsive constraints for mobile tightness
+      const collisionStartOffset = window.innerWidth <= 900 ? 20 : 60;
+      const collisionEndOffset = window.innerWidth <= 900 ? 20 : 40;
+
       if (gap > 250) {
-          const blockStart = sourceX + 60;
-          const blockEnd = targetX - 40;
+          const blockStart = sourceX + collisionStartOffset;
+          const blockEnd = targetX - collisionEndOffset;
           
           const collisions = getCollisionRegions(blockStart, blockEnd, cardCache);
           const gridHeight = scrollHeight;
@@ -704,14 +708,17 @@ function drawArrows() {
        
        const channelOffset = gutterAssignments[id] || 0;
        const gapOffset = gapAssignments[id] || 0;
+       
+       // Responsive Gutter Base
+       const gutterBase = window.innerWidth <= 900 ? 12 : 32;
 
        let d = "";
        const r = 8; 
        
        if (gap > 250) {
            const crossY = hopY + gapOffset;
-           const gutterX1 = sourceX + 32 + channelOffset; 
-           const gutterX2 = targetX - 32 - channelOffset; 
+           const gutterX1 = sourceX + gutterBase + channelOffset; 
+           const gutterX2 = targetX - gutterBase - channelOffset; 
            
             d = `M ${sourceX} ${sourceY} ` +
              `L ${gutterX1 - r} ${sourceY} ` + 
