@@ -898,16 +898,12 @@ function drawArrows() {
          const targetMetrics = cardCache.get(coreqId);
          if (!targetMetrics) return;
 
-              // Connection Points: Bottom Center
+              // Connection Points: Bottom of Source -> Top of Target
               const xSource = sourceMetrics.x + sourceMetrics.w / 2;
               const ySource = sourceMetrics.y + sourceMetrics.h;
               const xTarget = targetMetrics.x + targetMetrics.w / 2;
-              const yTarget = targetMetrics.y + targetMetrics.h;
+              const yTarget = targetMetrics.y; // Connect to TOP of target (Shortest Path)
               
-              // Draw U-shape connecting the bottoms
-              // Go down below the lowest card (reduced depth to 8px)
-              const yLoop = Math.max(ySource, yTarget) + 8;
-
               // Parallel wires
               const offsets = [-3, 3]; 
 
@@ -916,11 +912,8 @@ function drawArrows() {
 
               offsets.forEach(off => {
                    
-                   // Path: Start(Bottom) -> Down -> Horizontal -> Up -> Target(Bottom)
-                   // Nested U-shapes via offset
+                   // Path: Direct Vertical Line
                    const d = `M ${xSource + off} ${ySource} ` +
-                             `L ${xSource + off} ${yLoop + off} ` +
-                             `L ${xTarget + off} ${yLoop + off} ` +
                              `L ${xTarget + off} ${yTarget}`;
 
                  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
