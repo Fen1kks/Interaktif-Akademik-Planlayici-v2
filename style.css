@@ -179,16 +179,7 @@ body {
   color: white;
 }
 
-/* Special Summer Practice Card */
-.course-card.summer-practice {
-  border: 2px dashed var(--c-primary);
-  background: rgba(37, 99, 235, 0.05); /* very light primary tint */
-}
 
-.course-card.summer-practice .course-id {
-  background: var(--c-primary);
-  color: #fff;
-}
 
 .brand span {
   font-weight: 400;
@@ -640,4 +631,14 @@ body {
     bottom: 0.25rem;
     right: 0.5rem;
   }
+}
+/* Special Summer Practice Card (Moved to end for precedence) */
+.course-card.summer-practice {
+  border: 2px dashed var(--c-primary) !important;
+  background: rgba(37, 99, 235, 0.05) !important;
+}
+
+.course-card.summer-practice .course-id {
+  background: var(--c-primary) !important;
+  color: #fff !important;
 }
