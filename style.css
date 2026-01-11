@@ -91,11 +91,92 @@ body {
   flex-shrink: 0; /* Prevent header shrinking */
 }
 
-.brand h1 {
-  font-size: 1.25rem;
-  font-weight: 700;
+/* Brand & Department Selector */
+.brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.department-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.department-selector h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
   letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--c-text-main);
+  transition: color 0.2s;
+}
+
+.department-selector:hover h1 {
   color: var(--c-primary);
+}
+
+.chevron-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--c-text-muted);
+  transition: transform 0.2s;
+}
+
+.department-selector:hover .chevron-icon {
+  color: var(--c-primary);
+}
+
+.department-selector.active .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  min-width: 250px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s;
+  flex-direction: column;
+  display: flex;
+}
+
+.department-selector.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--c-text-main);
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background: var(--c-bg);
+  color: var(--c-primary);
+}
+
+.dropdown-item.selected {
+  background: var(--c-primary);
+  color: white;
 }
 
 .brand span {
@@ -518,9 +599,33 @@ body {
     font-size: 0.65rem;
   }
   
-  /* Larger touch targets for checkboxes on mobile */
-  .custom-checkbox {
-      width: 30px;
-      height: 30px;
+/* Attribution Footer */
+.attribution {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  color: var(--c-text-muted);
+  font-weight: 500;
+  z-index: 100;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+  pointer-events: none; /* Let clicks pass through if it covers something important */
+}
+
+.attribution:hover {
+  opacity: 1;
+}
+
+.author-name {
+  color: var(--c-primary);
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .attribution {
+    font-size: 0.65rem;
+    bottom: 0.25rem;
+    right: 0.5rem;
   }
 }

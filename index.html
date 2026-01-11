@@ -11,7 +11,14 @@
   <body>
     <header class="stats-bar">
       <div class="brand">
-        <h1>Department of Mechanical Engineering</h1>
+        <div class="department-selector" id="dept-selector">
+            <h1 id="dept-title">Department of Mechanical Engineering</h1>
+            <svg class="chevron-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            
+            <div class="dropdown-menu" id="dept-dropdown">
+                <!-- Javascript will populate this -->
+            </div>
+        </div>
         <span>Academic Planner & GPA Forecaster</span>
       </div>
 
@@ -42,8 +49,14 @@
       </main>
     </div>
 
+    <div class="attribution">
+        Created by <span class="author-name">Hızır Ketenci</span>
+    </div>
+
     <!-- Scripts -->
-    <script src="data.js"></script>
+    <script src="data/registry.js"></script>
+    <script src="data/me.js"></script>
+    <script src="data/ceng.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

@@ -1,6 +1,3 @@
-/* =========================================================================
-   1. CONFIGURATION & CONSTANTS
-   ========================================================================= */
 const GRADES = {
   AA: 4.0,
   BA: 3.5,
@@ -22,20 +19,89 @@ const themeToggle = document.getElementById("theme-toggle");
 const sunIcon = document.querySelector(".sun-icon");
 const moonIcon = document.querySelector(".moon-icon");
 
-// Clean Data (Filter unknown prereqs)
-const allIds = new Set(curriculum.map((c) => c.id));
-curriculum.forEach((c) => {
-  c.prereqs = c.prereqs.filter((p) => allIds.has(p));
-});
+// Dept Elements
+const deptTitle = document.getElementById("dept-title");
+const deptSelector = document.getElementById("dept-selector");
+const deptDropdown = document.getElementById("dept-dropdown");
 
+// GLOBAL STATE
+let currentDept = localStorage.getItem("lastDept") || "ME";
+let curriculum = []; // Will be loaded dynamically
+let state = {};      // Will be loaded dynamically
 
 /* =========================================================================
-   2. STATE MANAGEMENT
+   2. DEPARTMENT & STATE MANAGEMENT
    ========================================================================= */
-let state = JSON.parse(localStorage.getItem("gpaState")) || {};
+
+// Initialize System
+function initSystem() {
+    // 1. Populate Dropdown
+    const codes = Object.keys(window.departments);
+    deptDropdown.innerHTML = codes.map(code => 
+        `<div class="dropdown-item ${code === currentDept ? 'selected' : ''}" onclick="switchDepartment('${code}')">
+            ${window.departments[code].name} (${code})
+        </div>`
+    ).join("");
+
+    // 2. Load Department
+    loadDepartment(currentDept);
+
+    // 3. Setup Dropdown Events
+    deptSelector.addEventListener("click", (e) => {
+        if (!e.target.closest(".dropdown-item")) {
+            deptSelector.classList.toggle("active");
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+        if (!deptSelector.contains(e.target)) {
+            deptSelector.classList.remove("active");
+        }
+    });
+}
+
+function switchDepartment(code) {
+    if (!window.departments[code]) return;
+    currentDept = code;
+    localStorage.setItem("lastDept", code);
+    
+    // Update Dropdown Selection UI
+    document.querySelectorAll(".dropdown-item").forEach(item => {
+        item.classList.remove("selected");
+        if (item.textContent.includes(`(${code})`)) item.classList.add("selected");
+    });
+    
+    loadDepartment(code);
+}
+
+function loadDepartment(code) {
+    const deptData = window.departments[code];
+    curriculum = deptData.curriculum; // Shallow copy reference
+    
+    // Update Title
+    deptTitle.textContent = `Department of ${deptData.name}`;
+
+    // Clean Data (Filter unknown prereqs - Scoped to this dept)
+    const allIds = new Set(curriculum.map((c) => c.id));
+    curriculum.forEach((c) => {
+      c.prereqs = c.prereqs.filter((p) => allIds.has(p));
+    });
+
+    // Load State for this Department
+    state = JSON.parse(localStorage.getItem(`gpaState_${code}`)) || {};
+
+    // Re-render
+    render();
+    
+    // Defer arrow drawing until render is complete
+    requestAnimationFrame(() => {
+        scheduleDrawArrows();
+    });
+}
 
 function saveState() {
-  localStorage.setItem("gpaState", JSON.stringify(state));
+  localStorage.setItem(`gpaState_${currentDept}`, JSON.stringify(state));
 }
 
 function updateState(courseId, isCompleted, grade, skipRender = false) {
