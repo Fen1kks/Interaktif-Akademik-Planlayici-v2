@@ -72,7 +72,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden; 
+  overflow: hidden; /* Keep body hidden, scroll wrapper */
 }
 
 /* =========================================================================
@@ -88,6 +88,7 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: var(--shadow-sm);
   z-index: 10;
+  flex-shrink: 0; /* Prevent header shrinking */
 }
 
 .brand h1 {
@@ -158,21 +159,23 @@ body {
   flex: 1;
   display: flex;
   align-items: flex-start; 
-  justify-content: center;
-  overflow: hidden;
+  justify-content: flex-start; /* Changed from center to start for scrolling */
+  overflow: auto; /* Enable scrolling */
   position: relative;
   background: var(--c-bg);
   padding-top: 0; 
+  width: 100%; /* Ensure full width */
 }
 
 .curriculum-grid {
   display: grid;
   grid-template-columns: repeat(8, max-content);
   gap: 0 4rem;
-  padding: 0 1rem 1rem 1rem; 
+  padding: 0 1rem 4rem 1rem;
   position: relative;
   transform-origin: top center; 
   transition: transform 0.2s ease-out;
+  margin: auto; /* Safe centering: centers if space exists, start-aligns if overflow */
 }
 
 /* Scrollbar Customization */
@@ -258,7 +261,6 @@ body {
 .course-card.locked {
   background: var(--c-locked);
   color: var(--c-text-muted);
-  opacity: 0.7;
   box-shadow: none;
   border-color: transparent;
 }
@@ -364,9 +366,9 @@ body {
   display: none;
 }
 .custom-checkbox {
-  width: 20px; 
-  height: 20px;
-  border-radius: 6px;
+  width: 18px; 
+  height: 18px;
+  border-radius: 4px;
   border: 2px solid var(--grade-color, #ddd);
   display: flex;
   align-items: center;
@@ -449,8 +451,76 @@ body {
 /* =========================================================================
    8. RESPONSIVE UTILITIES
    ========================================================================= */
-@media (max-width: 800px) {
-  #arrows-container {
-    display: none; 
+/* Removed hiding arrows on mobile to allow scrolling usage */
+/* @media (max-width: 800px) { ... } */
+
+/* Tablet & Mobile Spacing Optimizations */
+@media (max-width: 900px) {
+  .curriculum-grid {
+    gap: 0 2rem; /* Reduce horizontal gap from 4rem to 2rem */
+    margin: 0; /* Reset vertical margin to prevent centering gap on mobile */
+  }
+
+  .course-card + .course-card {
+    margin-top: 1rem; /* Reduce vertical gap from 2rem to 1rem */
+  }
+  
+  .term-column {
+    gap: 0.5rem; /* Tighter column spacing */
+  }
+
+  /* Hide scrollbars on mobile/tablet for cleaner touch experience */
+  .grid-wrapper {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .grid-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-bar {
+    padding: 2rem 1rem 0.5rem 1rem; /* Increased top padding for breathing room */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem; /* Reduce gap between brand and metrics */
+    position: relative; /* Anchor for absolute toggle */
+  }
+  
+  .brand h1 {
+    font-size: 1rem;
+    padding-right: 2rem; /* Avoid overlap with toggle */
+  }
+  
+  .brand span {
+    font-size: 0.8rem;
+  }
+  
+  /* Pull toggle out of flow and place top-right */
+  .theme-toggle {
+    position: absolute;
+    top: 1.8rem; /* Aligned with the text */
+    right: 1rem;
+  }
+  
+  .metrics {
+    width: 100%;
+    justify-content: flex-end; /* Align credits and GPA together on the right */
+    gap: 1.5rem; /* Group them with space */
+  }
+  
+  .metric-value {
+    font-size: 1.2rem;
+  }
+  
+  .metric-label {
+    font-size: 0.65rem;
+  }
+  
+  /* Larger touch targets for checkboxes on mobile */
+  .custom-checkbox {
+      width: 30px;
+      height: 30px;
   }
 }
