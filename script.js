@@ -479,7 +479,8 @@ function getRelativePos(el, root) {
 }
 
 function getCollisionRegions(minX, maxX, cardCache) {
-    const regions = [];
+    // Block the top area (Term Headers) to prevent arrows passing between Year Name and First Card
+    const regions = [{ y1: 0, y2: 60 }];
     
     cardCache.forEach(card => {
         const x1 = card.x;
