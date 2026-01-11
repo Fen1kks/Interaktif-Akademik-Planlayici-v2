@@ -253,7 +253,7 @@ body {
   grid-template-columns: repeat(8, max-content);
   gap: 0 4rem;
   padding: 0 1rem 4rem 1rem;
-  position: relative;
+  position: relative; /* Anchor for absolute SVG arrows */
   transform-origin: top center; 
   transition: transform 0.2s ease-out;
   margin: auto; /* Safe centering: centers if space exists, start-aligns if overflow */
@@ -473,7 +473,7 @@ body {
 /* Dropdown */
 .grade-select {
   border: 1px solid #eee;
-  border-radius: var(--radius-sm);
+  border-radius: 4px; /* Reduced from var(--radius-sm) for sharper edges */
   padding: 0.25rem 0.5rem;
   font-size: 0.85rem;
   outline: none;

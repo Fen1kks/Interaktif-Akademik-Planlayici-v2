@@ -94,10 +94,13 @@ function loadDepartment(code) {
     // Re-render
     render();
     
-    // Defer arrow drawing until render is complete
-    requestAnimationFrame(() => {
-        scheduleDrawArrows();
-    });
+    // Draw immediately (initial pass)
+    requestAnimationFrame(scheduleDrawArrows);
+
+    // Recalculate zoom (and redraw) once layout settles
+    setTimeout(() => {
+        calculateOptimalZoom();
+    }, 150);
 }
 
 function saveState() {
@@ -251,6 +254,7 @@ function calculateMetrics() {
 function render() {
   grid.innerHTML = "";
   
+  // Re-inject the SVG container into the grid
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.id = "arrows-container";
   svg.style.position = "absolute";
@@ -545,7 +549,8 @@ function getRelativePos(el, root) {
 }
 
 function getCollisionRegions(minX, maxX, cardCache) {
-    const regions = [];
+    // Block the top area (Term Headers) to prevent arrows passing between Year Name and First Card
+    const regions = [{ y1: 0, y2: 60 }];
     
     cardCache.forEach(card => {
         const x1 = card.x;
@@ -576,7 +581,7 @@ function findBestYGap(collisionRegions, targetY, minY, maxY) {
         const gapEnd = next.y1;
         const gapSize = gapEnd - gapStart;
 
-        if (gapSize > 15) { 
+        if (gapSize > 5) { // Threshold reduced from 15 for tighter mobile spacing
             const gapCenter = gapStart + gapSize / 2;
             const dist = Math.abs(gapCenter - targetY);
             if (dist < minDist) {
@@ -709,14 +714,23 @@ function drawArrows() {
       
       let hopY = targetY; 
       
-      if (gap > 250) {
-          const blockStart = sourceX + 60;
-          const blockEnd = targetX - 40;
+      // Responsive constraints for mobile tightness
+      const collisionStartOffset = 10;
+      const collisionEndOffset = 10;
+      // Threshold must be < (CardWidth + Gap) to detect single-column skips. 
+      // Gap is ~30-50px. Card is ~150px. Total ~200px. 
+      // So 60px is a safe threshold to distinguish "Adjacent" vs "Skipping".
+      const longArrowThreshold = 60; 
+
+      if (gap > longArrowThreshold) {
+          const blockStart = sourceX + collisionStartOffset;
+          const blockEnd = targetX - collisionEndOffset;
           
           const collisions = getCollisionRegions(blockStart, blockEnd, cardCache);
           const gridHeight = scrollHeight;
           
-          const searchMinY = Math.max(sourceY, targetY) + 60;
+          // Expand search range: start slightly above and go to bottom
+          const searchMinY = Math.min(sourceY, targetY) - 40; 
           const searchMaxY = gridHeight; 
           
           const bestY = findBestYGap(collisions, targetY, searchMinY, searchMaxY);
@@ -744,8 +758,13 @@ function drawArrows() {
       const arrows = verticalLanes[key];
       arrows.sort((a, b) => ((a.sourceY + a.targetY) / 2) - ((b.sourceY + b.targetY) / 2));
       const count = arrows.length;
-      const availableWidth = 24; 
-      const step = Math.min(12, availableWidth / count); 
+      
+      // Responsive constraints for packing lines
+      const isMobile = window.innerWidth <= 900;
+      const availableWidth = isMobile ? 16 : 24; 
+      const maxStep = isMobile ? 4 : 12; 
+      
+      const step = Math.min(maxStep, availableWidth / count); 
       arrows.forEach((arrow, index) => {
           gutterAssignments[arrow.id] = (index - (count - 1) / 2) * step;
       });
@@ -769,14 +788,19 @@ function drawArrows() {
        
        const channelOffset = gutterAssignments[id] || 0;
        const gapOffset = gapAssignments[id] || 0;
+       
+       // Responsive Gutter Base & Thresholds
+       const isMobile = window.innerWidth <= 900;
+       const gutterBase = isMobile ? 18 : 32; // Increased from 10 to 18 for straight exit
+       const longArrowThreshold = 60; 
+       const r = isMobile ? 8 : 8; // Consistent radius
 
        let d = "";
-       const r = 8; 
        
-       if (gap > 250) {
+       if (gap > longArrowThreshold) {
            const crossY = hopY + gapOffset;
-           const gutterX1 = sourceX + 32 + channelOffset; 
-           const gutterX2 = targetX - 32 - channelOffset; 
+           const gutterX1 = sourceX + gutterBase + channelOffset; 
+           const gutterX2 = targetX - gutterBase - channelOffset; 
            
             d = `M ${sourceX} ${sourceY} ` +
              `L ${gutterX1 - r} ${sourceY} ` + 
@@ -843,32 +867,41 @@ function drawArrows() {
          const targetMetrics = cardCache.get(coreqId);
          if (!targetMetrics) return;
 
-         // Only draw one set of lines per pair (Source above Target)
-         if (sourceMetrics.cy < targetMetrics.cy) {
-             const x_short = sourceMetrics.x + sourceMetrics.w / 2;
-             const y1_short = sourceMetrics.y + sourceMetrics.h; // Bottom of source (Short)
-             const y1_long = sourceMetrics.cy; // Center of source (Long/Extended Up)
-             const y2 = targetMetrics.y; // Top of target (Constant)
+             // Draw two parallel lines in the gutter (Right Side) to avoid cutting through middle cards
+             // Increased offset to 18px (mobile) to allow straight line before turn
+             const gutterX = sourceMetrics.x + sourceMetrics.w + (window.innerWidth <= 900 ? 18 : 20);
+             const r = 8; 
              
-             // Draw two parallel lines
-             const offset = 4;
-             const pairColor = generateStableColor(course.id + coreqId); 
+             // Bracket style path
+             // Start from Center-Right of Source
+             // Curve to Vertical Line
+             // Go down/up to Target Center-Right
              
-             // Check lock state for visual styling
-             const isPairLocked = isLocked(course.id) || isLocked(coreqId);
+             const ySource = sourceMetrics.cy;
+             const yTarget = targetMetrics.cy;
+             const cardRight = sourceMetrics.x + sourceMetrics.w;
 
-             [ -offset, offset ].forEach(off => {
-                 const x = x_short + off;
-                 const dShort = `M ${x} ${y1_short} L ${x} ${y2}`;
-                 const dLong = `M ${x} ${y1_long} L ${x} ${y2}`;
+             // Parallel wires
+             const offsets = [-3, 3]; 
+
+             offsets.forEach(off => {
+                 const currentGutter = gutterX + off;
                  
+                  // Path: Start (Card Right Edge) -> Line to Gutter -> Vertical -> Line to Target (Card Right Edge)
+                  const d = `M ${cardRight} ${ySource} ` +
+                           `L ${currentGutter - r} ${ySource} ` +
+                           `Q ${currentGutter} ${ySource} ${currentGutter} ${ySource + r * (yTarget > ySource ? 1 : -1)} ` +
+                           `L ${currentGutter} ${yTarget - r * (yTarget > ySource ? 1 : -1)} ` +
+                           `Q ${currentGutter} ${yTarget} ${currentGutter - r} ${yTarget} ` +
+                           `L ${cardRight} ${yTarget}`;
+
                  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                 path.setAttribute("d", dShort); 
-                 path.setAttribute("data-d-short", dShort);
-                 path.setAttribute("data-d-long", dLong);
+                 path.setAttribute("d", d); 
+                 path.setAttribute("fill", "none"); 
 
                  path.setAttribute("stroke", pairColor);
-                 path.setAttribute("stroke-width", "3");
+                 const strokeWidth = window.innerWidth <= 900 ? "0.8" : "3";
+                 path.setAttribute("stroke-width", strokeWidth);
                  
                  let baseOpacity = "0.9";
                  if (isPairLocked) {
@@ -885,8 +918,7 @@ function drawArrows() {
                  path.setAttribute("data-original-color", pairColor);
                   
                   svg.appendChild(path);
-              });
-          }
+               });
       });
   });
 }
@@ -897,6 +929,13 @@ function drawArrows() {
    ========================================================================= */
 
 function calculateOptimalZoom() {
+  // Mobile/Tablet: Disable zoom to rely on native scrolling and avoid coordinate shifts
+  if (window.innerWidth <= 900) {
+      grid.style.zoom = "1";
+      scheduleDrawArrows();
+      return;
+  }
+
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight - 80;
   
@@ -906,11 +945,19 @@ function calculateOptimalZoom() {
     const gridWidth = grid.scrollWidth;
     const gridHeight = grid.scrollHeight;
     
+    // Only zoom if content is larger than viewport
+    if (gridWidth <= viewportWidth && gridHeight <= viewportHeight) {
+        grid.style.zoom = "1";
+        scheduleDrawArrows();
+        return;
+    }
+    
     const zoomX = (viewportWidth * 0.98) / gridWidth;
     const zoomY = (viewportHeight * 0.95) / gridHeight;
     
     const optimalZoom = Math.min(zoomX, zoomY);
-    const finalZoom = Math.max(0.4, optimalZoom);
+    // Don't shrink too much on desktop either
+    const finalZoom = Math.max(0.6, optimalZoom);
     
     grid.style.zoom = finalZoom;
     
@@ -929,7 +976,11 @@ window.addEventListener("resize", () => {
 });
 
 // START
-render();
-setTimeout(() => {
-  calculateOptimalZoom();
-}, 150);
+// START
+// Initialize the system once all scripts are loaded
+window.addEventListener('load', () => {
+    initSystem();
+    setTimeout(() => {
+        calculateOptimalZoom();
+    }, 200);
+});
