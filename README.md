@@ -2,7 +2,7 @@
 
 ## 🚀 Canlı Demo
 
-Projeyi hemen dene: [Ders Planlama Sistemi](https://fen1kks.github.io/ders-planlama-sistemi/)
+Projeyi hemen dene: [İnteraktif Akademik Planlayıcı](https://fen1kks.github.io/Interaktif-Akademik-Planlayici/)
 
 ## 📝 Kısa Özet
 
