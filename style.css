@@ -215,8 +215,8 @@ body {
   transition: color 0.3s ease;
 }
 
-/* Theme Toggle Button */
-.theme-toggle {
+/* Theme Toggle & Reset Button */
+.theme-toggle, .reset-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -228,11 +228,23 @@ body {
   align-items: center;
   justify-content: center;
 }
-.theme-toggle:hover {
+.theme-toggle:hover, .reset-btn:hover {
   background: rgba(0, 0, 0, 0.05);
 }
-[data-theme="dark"] .theme-toggle:hover {
+[data-theme="dark"] .theme-toggle:hover, [data-theme="dark"] .reset-btn:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Reset Button Specifics */
+.reset-btn:hover {
+    color: #ef4444; 
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Dark Mode Adjustment for Reset Button */
+[data-theme="dark"] .reset-btn:hover {
+    color: #fca5a5; /* Softer, Pastel Red */
+    background: rgba(127, 29, 29, 0.4) !important; /* Deep Red Background */
 }
 
 /* =========================================================================

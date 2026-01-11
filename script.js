@@ -631,8 +631,8 @@ function generateStableColor(str) {
   const colorPalette = [
     '#4965CD', '#E1497D', '#9C5B07', '#F9364E', '#20AA6C',
     '#F4315A', '#87D305', '#AD11D5', '#2843F5', '#74ED9F',
-    '#1ABC9C', '#E67E22', '#9B59B6', '#34495E', '#D35400', 
-    '#C0392B', '#16A085', '#8E44AD', '#2C3E50', '#F39C12'
+    '#1ABC9C', '#E67E22', '#9B59B6', '#4083c5ff', '#D35400', 
+    '#C0392B', '#16A085', '#8E44AD', '#dd7b5dff', '#F39C12'
   ];
   
   const index = Math.abs(hash) % colorPalette.length;
@@ -1004,6 +1004,22 @@ window.addEventListener("resize", () => {
 // Initialize the system once all scripts are loaded
 window.addEventListener('load', () => {
     initSystem();
+
+    // Reset Button Logic
+    const resetBtn = document.getElementById("reset-btn");
+    if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+            if (confirm("Are you sure you want to reset ALL data? This cannot be undone.")) {
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith("gpaState_")) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                location.reload();
+            }
+        });
+    }
+
     setTimeout(() => {
         calculateOptimalZoom();
     }, 50);
