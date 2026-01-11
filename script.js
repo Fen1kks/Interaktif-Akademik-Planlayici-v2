@@ -390,7 +390,7 @@ function createCard(course) {
                 </div>
             </label>
 
-            <div class="course-credits" style="font-size: 0.75rem; font-weight: 600; color: var(--c-text-muted);">${course.credits} Credit</div>
+            <div class="course-credits" style="font-size: 0.75rem; font-weight: 600; color: ${creditReq ? 'var(--c-primary)' : 'var(--c-text-muted)'};">${creditDisplay}</div>
 
             <select class="grade-select" ${locked ? "disabled" : ""} style="${selectStyle}">
                 <option value="" ${data.grade === "" || !data.grade ? "selected" : ""}>--</option>
