@@ -75,8 +75,11 @@ function cascadeUncheck(courseId) {
    3. THEME MANAGEMENT
    ========================================================================= */
 // Initialization
+// Initialization
 const savedTheme = localStorage.getItem("theme");
-if (savedTheme === "dark") {
+const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
   document.documentElement.setAttribute("data-theme", "dark");
   updateThemeIcon(true);
 } else {
@@ -250,12 +253,11 @@ function createCard(course) {
   
   // Interactive Logic
   if (locked) {
-    card.style.cursor = "not-allowed";
+    card.style.cursor = "pointer";
     card.onclick = (e) => {
       if (!e.target.closest("select")) {
-        alert(
-          `You cannot take ${course.name} (${course.id}) because you have not passed its prerequisites: ${prereqText}`
-        );
+        highlightDependencies();
+        setTimeout(() => resetHighlights(), 2000);
       }
     };
   } else {
@@ -339,9 +341,38 @@ function createCard(course) {
     }
   });
 
+  function resetHighlights() {
+    const allArrows = document.querySelectorAll(".arrow-path");
+    const allCards = document.querySelectorAll(".course-card");
+
+    allArrows.forEach(arrow => {
+      const originalColor = arrow.getAttribute("data-original-color");
+      const baseOpacity = arrow.getAttribute("data-base-opacity"); // Stateless source of truth
+      
+      if (originalColor) arrow.setAttribute("stroke", originalColor);
+      if (baseOpacity) arrow.style.opacity = baseOpacity;
+
+      // DYNAMIC EXTENSION: Revert to Short Path
+      if (arrow.hasAttribute("data-d-short")) {
+        arrow.setAttribute("d", arrow.getAttribute("data-d-short"));
+      }
+    });
+    
+    allCards.forEach(card => {
+      card.classList.remove("dependency-highlight");
+      card.removeAttribute("data-was-locked");
+      card.style.boxShadow = ""; 
+    });
+  }
+
   // Card Hover Effects (for Prereq Highlighting)
   card.addEventListener("mouseenter", () => {
+    // Force cleanup first to prevent stuck states from rapid movement
+    resetHighlights();
+
     const allArrows = document.querySelectorAll(".arrow-path");
+    
+    // ... rest of logic ...
     
     const hasConnections = Array.from(allArrows).some(arrow => 
       arrow.getAttribute("data-source") === course.id || 
@@ -369,8 +400,6 @@ function createCard(course) {
         if (source === course.id) connectedCourses.set(target, arrowColor);
         if (target === course.id) connectedCourses.set(source, arrowColor);
         
-        const originalOpacity = arrow.style.opacity;
-        arrow.setAttribute("data-original-opacity", originalOpacity);
         arrow.style.opacity = "0.9"; 
         
         // DYNAMIC EXTENSION: Switch to Long Path
@@ -396,30 +425,7 @@ function createCard(course) {
   });
 
   card.addEventListener("mouseleave", () => {
-    const allArrows = document.querySelectorAll(".arrow-path");
-    const allCards = document.querySelectorAll(".course-card");
-    
-    allArrows.forEach(arrow => {
-      const originalColor = arrow.getAttribute("data-original-color");
-      const originalOpacity = arrow.getAttribute("data-original-opacity");
-      
-      arrow.setAttribute("stroke", originalColor);
-      if (originalOpacity) {
-        arrow.style.opacity = originalOpacity;
-        arrow.removeAttribute("data-original-opacity");
-      }
-
-      // DYNAMIC EXTENSION: Revert to Short Path
-      if (arrow.hasAttribute("data-d-short")) {
-        arrow.setAttribute("d", arrow.getAttribute("data-d-short"));
-      }
-    });
-    
-    allCards.forEach(otherCard => {
-      otherCard.classList.remove("dependency-highlight");
-      otherCard.removeAttribute("data-was-locked");
-      otherCard.style.boxShadow = ""; 
-    });
+    resetHighlights();
   });
 
   return card;
@@ -454,6 +460,11 @@ function scheduleDrawArrows() {
         drawRequestId = null;
     });
 }
+
+// Redraw arrows on window resize (orientation change)
+window.addEventListener('resize', () => {
+    scheduleDrawArrows();
+});
 
 function getRelativePos(el, root) {
     let x = 0;
@@ -532,8 +543,18 @@ function drawArrows() {
   if (!svg) return;
   svg.innerHTML = "";
   
+  // CRITICAL FIX: Reset dimensions to 0 before measuring to prevent feedback loop
+  // where the OLD SVG size forces the container to stay wide.
+  svg.style.width = "0px";
+  svg.style.height = "0px";
+  svg.setAttribute("width", "0");
+  svg.setAttribute("height", "0");
+
+  // Measure content *without* the interference of the old SVG
   const scrollWidth = grid.scrollWidth;
   const scrollHeight = grid.scrollHeight;
+  
+  // Now apply the correct dimensions
   svg.setAttribute("width", scrollWidth);
   svg.setAttribute("height", scrollHeight);
   svg.style.width = `${scrollWidth}px`;
@@ -723,76 +744,79 @@ function drawArrows() {
        path.setAttribute("data-source", prereqId);
        path.setAttribute("data-target", courseId);
  
-       const prereqState = state[prereqId];
-       const isPrereqCompleted = prereqState && prereqState.completed && prereqState.grade !== "FF";
-       
-       let strokeColor = generateStableColor(prereqId);
-       
-       if (!isPrereqCompleted) {
-         path.setAttribute("stroke-dasharray", "5,5");
-         path.style.opacity = "0.5";
-       } else {
-         path.style.opacity = "0.9";
-       }
- 
-       path.setAttribute("stroke", strokeColor);
-       path.setAttribute("stroke-width", "3");
-       path.setAttribute("data-original-color", strokeColor);
-       
-       svg.appendChild(path);
-  });
-
-  // 4. DRAW CO-REQUISITES (Double Lines)
-  // Only draw if source is vertically above target to avoid duplicates
-  curriculum.forEach(course => {
-      if (!course.coreqs || !course.coreqs.length) return;
+      const prereqState = state[prereqId];
+      const isPrereqCompleted = prereqState && prereqState.completed && prereqState.grade !== "FF";
       
-      const sourceMetrics = cardCache.get(course.id);
-      if (!sourceMetrics) return;
+      let strokeColor = generateStableColor(prereqId);
+      let baseOpacity = "0.9";
+      
+      if (!isPrereqCompleted) {
+        path.setAttribute("stroke-dasharray", "5,5");
+        baseOpacity = "0.5";
+      }
 
-      course.coreqs.forEach(coreqId => {
-          const targetMetrics = cardCache.get(coreqId);
-          if (!targetMetrics) return;
+      path.style.opacity = baseOpacity;
+      path.setAttribute("data-base-opacity", baseOpacity);
 
-          // Only draw one set of lines per pair (Source above Target)
-          if (sourceMetrics.cy < targetMetrics.cy) {
-              const x_short = sourceMetrics.x + sourceMetrics.w / 2;
-              const y1_short = sourceMetrics.y + sourceMetrics.h; // Bottom of source (Short)
-              const y1_long = sourceMetrics.cy; // Center of source (Long/Extended Up)
-              const y2 = targetMetrics.y; // Top of target (Constant)
-              
-              // Draw two parallel lines
-              const offset = 4;
-              const pairColor = generateStableColor(course.id + coreqId); 
-              
-              // Check lock state for visual styling
-              const isPairLocked = isLocked(course.id) || isLocked(coreqId);
+      path.setAttribute("stroke", strokeColor);
+      path.setAttribute("stroke-width", "3");
+      path.setAttribute("data-original-color", strokeColor);
+      
+      svg.appendChild(path);
+ });
 
-              [ -offset, offset ].forEach(off => {
-                  const x = x_short + off;
-                  const dShort = `M ${x} ${y1_short} L ${x} ${y2}`;
-                  const dLong = `M ${x} ${y1_long} L ${x} ${y2}`;
-                  
-                  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                  path.setAttribute("d", dShort); 
-                  path.setAttribute("data-d-short", dShort);
-                  path.setAttribute("data-d-long", dLong);
+ // 4. DRAW CO-REQUISITES (Double Lines)
+ // Only draw if source is vertically above target to avoid duplicates
+ curriculum.forEach(course => {
+     if (!course.coreqs || !course.coreqs.length) return;
+     
+     const sourceMetrics = cardCache.get(course.id);
+     if (!sourceMetrics) return;
 
-                  path.setAttribute("stroke", pairColor);
-                  path.setAttribute("stroke-width", "3");
-                  
-                  if (isPairLocked) {
-                      path.setAttribute("stroke-dasharray", "4,4");
-                      path.style.opacity = "0.5";
-                  } else {
-                      path.style.opacity = "0.9";
-                  }
-                  
-                  // Interaction Attributes
-                  path.setAttribute("class", "arrow-path coreq-line"); 
-                  path.setAttribute("data-source", course.id);
-                  path.setAttribute("data-target", coreqId);
-                  path.setAttribute("data-original-color", pairColor);
+     course.coreqs.forEach(coreqId => {
+         const targetMetrics = cardCache.get(coreqId);
+         if (!targetMetrics) return;
+
+         // Only draw one set of lines per pair (Source above Target)
+         if (sourceMetrics.cy < targetMetrics.cy) {
+             const x_short = sourceMetrics.x + sourceMetrics.w / 2;
+             const y1_short = sourceMetrics.y + sourceMetrics.h; // Bottom of source (Short)
+             const y1_long = sourceMetrics.cy; // Center of source (Long/Extended Up)
+             const y2 = targetMetrics.y; // Top of target (Constant)
+             
+             // Draw two parallel lines
+             const offset = 4;
+             const pairColor = generateStableColor(course.id + coreqId); 
+             
+             // Check lock state for visual styling
+             const isPairLocked = isLocked(course.id) || isLocked(coreqId);
+
+             [ -offset, offset ].forEach(off => {
+                 const x = x_short + off;
+                 const dShort = `M ${x} ${y1_short} L ${x} ${y2}`;
+                 const dLong = `M ${x} ${y1_long} L ${x} ${y2}`;
+                 
+                 const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                 path.setAttribute("d", dShort); 
+                 path.setAttribute("data-d-short", dShort);
+                 path.setAttribute("data-d-long", dLong);
+
+                 path.setAttribute("stroke", pairColor);
+                 path.setAttribute("stroke-width", "3");
+                 
+                 let baseOpacity = "0.9";
+                 if (isPairLocked) {
+                     path.setAttribute("stroke-dasharray", "4,4");
+                     baseOpacity = "0.5";
+                 }
+                 path.style.opacity = baseOpacity;
+                 path.setAttribute("data-base-opacity", baseOpacity);
+                 
+                 // Interaction Attributes
+                 path.setAttribute("class", "arrow-path coreq-line"); 
+                 path.setAttribute("data-source", course.id);
+                 path.setAttribute("data-target", coreqId);
+                 path.setAttribute("data-original-color", pairColor);
                   
                   svg.appendChild(path);
               });
