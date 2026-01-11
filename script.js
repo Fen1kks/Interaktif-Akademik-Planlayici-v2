@@ -345,34 +345,18 @@ function createCard(course) {
     data.grade === "FF" ? "#dc2626" : data.completed ? gradeColor : "#cbd5e1"
   );
   
+  // Custom Credit Display (e.g. for Summer Practice requiring 100 credits)
+  let creditDisplay = `${course.credits} Credit`;
+  const creditReq = course.prereqs.find(p => p.match(/^\d+\s+Credits?$/i));
+  
+  if (creditReq) {
+      creditDisplay = `Req: ${creditReq}`;
+  }
+
   // Interactive Logic
   if (locked) {
       card.style.cursor = "pointer";
-      // Intelligent Click Handler: Show why it's locked
-      card.onclick = () => {
-          // 1. Check for Credit Lock
-          const creditReq = course.prereqs.find(p => p.match(/^\d+\s+Credits?$/i));
-          if (creditReq) {
-              const req = parseInt(creditReq.match(/\d+/)[0], 10);
-              if ((window.currentTotalCredits || 0) < req) {
-                  const creditsEl = document.getElementById("total-credits");
-                  const originalText = creditsEl.textContent;
-                  creditsEl.textContent = `Need ${req}!`;
-                  creditsEl.style.color = "var(--hue-danger)";
-                  creditsEl.style.fontWeight = "bold";
-                  
-                  setTimeout(() => {
-                      creditsEl.textContent = originalText;
-                      creditsEl.style.color = ""; 
-                      creditsEl.style.fontWeight = "";
-                  }, 1500);
-                  return; 
-              }
-          }
-          
-          // 2. Default: Highlight missing prerequisites
-          highlightDependencies(course.id);
-      };
+      card.onclick = () => highlightDependencies(course.id);
   } else {
     card.style.cursor = "default";
     card.onclick = null;
