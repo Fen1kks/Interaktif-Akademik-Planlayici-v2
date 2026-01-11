@@ -895,6 +895,9 @@ function drawArrows() {
      if (!sourceMetrics) return;
 
      course.coreqs.forEach(coreqId => {
+         // Prevent duplicate drawing for mutual co-reqs
+         if (course.id > coreqId) return;
+
          const targetMetrics = cardCache.get(coreqId);
          if (!targetMetrics) return;
 
