@@ -20,3 +20,6 @@ Ders seçim dönemlerinde hangi dersin hangisine bağlı olduğunu (prerequisite
 * HTML5 & CSS3 (Modern HSL Renk Paleti & Flexbox/Grid)
 * Vanilla JavaScript (ES6+)
 * SVG (Dinamik Bezier Eğrileri ile Ok Çizimi)
+
+## 🚀 Canlı Demo
+Projeyi hemen dene: [https://fen1kks.github.io/ders-planlama-sistemi/](https://fen1kks.github.io/ders-planlama-sistemi/)
