@@ -495,6 +495,8 @@ body {
   .card-controls {
       padding-top: 0.2rem;
       gap: 0.4rem;
+      justify-content: space-between; /* Distribute items like desktop */
+      width: 100%; /* Ensure full width usage */
   }
   
   /* Compact Checkbox */
