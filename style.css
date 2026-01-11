@@ -658,5 +658,5 @@ body {
 
 .course-card.summer-practice .course-id {
   background: var(--c-primary) !important;
-  color: #fff !important;
+  color: #000 !important;
 }
