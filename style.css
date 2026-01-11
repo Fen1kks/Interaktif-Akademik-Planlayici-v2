@@ -179,6 +179,19 @@ body {
   color: white;
 }
 
+/* Special Summer Practice Card */
+#card-ME400,
+#card-ISE400 {
+  border: 2px dashed var(--c-primary);
+  background: rgba(37, 99, 235, 0.05); /* very light primary tint */
+}
+
+#card-ME400 .course-id,
+#card-ISE400 .course-id {
+  background: var(--c-primary);
+  color: #fff;
+}
+
 .brand span {
   font-weight: 400;
   color: var(--c-text-muted);

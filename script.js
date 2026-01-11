@@ -239,6 +239,9 @@ function calculateMetrics() {
     }
   });
 
+  // Expose for dynamic checks (e.g. ISE400)
+  window.currentTotalCredits = earnedCredits;
+
   const gpa =
     totalCredits > 0 ? (weightedSum / totalCredits).toFixed(2) : "0.00";
 
@@ -384,6 +387,25 @@ function createCard(course) {
     const isChecked = e.target.checked;
     
     if (isChecked) {
+        // Special Logic for ISE400: Requires 100 Credits
+        if (course.id === 'ISE400' && (window.currentTotalCredits || 0) < 100) {
+            e.target.checked = false;
+            
+            // Visual Feedback
+            const originalText = creditsEl.textContent;
+            creditsEl.textContent = "Need 100!";
+            creditsEl.style.color = "var(--hue-danger)";
+            creditsEl.style.fontWeight = "bold";
+            
+            setTimeout(() => {
+                creditsEl.textContent = originalText;
+                creditsEl.style.color = ""; 
+                creditsEl.style.fontWeight = "";
+            }, 1500);
+            
+            return;
+        }
+
         const currentGrade = state[course.id] ? state[course.id].grade : "";
         
         if (!currentGrade || currentGrade === "") {
@@ -607,7 +629,7 @@ function generateStableColor(str) {
   
   const colorPalette = [
     '#4965CD', '#E1497D', '#9C5B07', '#F9364E', '#20AA6C',
-    '#375EC5', '#87D305', '#AD11D5', '#2843F5', '#74ED9F',
+    '#F4315A', '#87D305', '#AD11D5', '#2843F5', '#74ED9F',
     '#1ABC9C', '#E67E22', '#9B59B6', '#34495E', '#D35400', 
     '#C0392B', '#16A085', '#8E44AD', '#2C3E50', '#F39C12'
   ];
