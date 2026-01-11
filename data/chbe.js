@@ -11,10 +11,11 @@ window.registerDepartment("CHBE", {
       // FRESHMAN - TERM 2
       { id: "MATH132", name: "Calculus II", credits: 4, prereqs: ["MATH131"], term: 2 },
       { id: "PHYS102", name: "Physics II", credits: 4, prereqs: ["PHYS101"], term: 2 },
-      { id: "CHEM113", name: "General Chemistry Lab.", credits: 2, prereqs: ["CHEM112!"], term: 2, coreqs: ["CHEM112"] },
-      { id: "CHEM112", name: "General Chemistry II", credits: 3, prereqs: ["CHEM111", "CHEM113!"], term: 2, coreqs: ["CHEM113"] },
+      { id: "CHEM113", name: "General Chemistry Lab.", credits: 2, prereqs: [], term: 2, coreqs: ["CHEM112!"] },
+      { id: "CHEM112", name: "General Chemistry II", credits: 3, prereqs: ["CHEM111"], term: 2, coreqs: ["CHEM113!"] },
       { id: "CHBE102", name: "Intro. to CHBE", credits: 2, prereqs: [], term: 2 },
       { id: "REXX3", name: "Restricted Elective", credits: 3, prereqs: [], term: 2 },
+      
       // SOPHOMORE - TERM 3
       { id: "MATH241", name: "Diff. Equations", credits: 4, prereqs: ["MATH132"], term: 3 },
       { id: "CHBE203", name: "Organic Chemistry", credits: 3, prereqs: ["CHEM111"], term: 3 },
@@ -42,8 +43,8 @@ window.registerDepartment("CHBE", {
 
       // JUNIOR - TERM 6
       { id: "CHBE302", name: "Exp. CHBE II", credits: 2, prereqs: ["CHBE301"], term: 6 },
-      { id: "CHBE386", name: "Math. Modeling in CHBE", credits: 3, prereqs: ["CHBE331!", "CHBE311", "CHBE362!"], term: 6, coreqs: ["CHBE362"] },
-      { id: "CHBE362", name: "Reactor Design", credits: 3, prereqs: ["CHBE213", "CHBE386!"], term: 6, coreqs: ["CHBE386"] },
+      { id: "CHBE386", name: "Math. Modeling in CHBE", credits: 3, prereqs: ["CHBE331!", "CHBE311"], term: 6, coreqs: ["CHBE362!"] },
+      { id: "CHBE362", name: "Reactor Design", credits: 3, prereqs: ["CHBE213"], term: 6, coreqs: ["CHBE386!"] },
       { id: "CHBE333", name: "Mass Transfer", credits: 3, prereqs: ["CHBE214!", "CHBE215"], term: 6 },
       { id: "REXX6", name: "Restricted Elective", credits: 3, prereqs: [], term: 6 },
       { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 6 },
