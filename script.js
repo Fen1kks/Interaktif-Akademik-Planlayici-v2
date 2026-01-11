@@ -387,8 +387,8 @@ function createCard(course) {
     const isChecked = e.target.checked;
     
     if (isChecked) {
-        // Special Logic for ISE400: Requires 100 Credits
-        if (course.id === 'ISE400' && (window.currentTotalCredits || 0) < 100) {
+        // Special Logic for Summer Practice (ISE400, ME400): Requires 100 Credits
+        if (['ISE400', 'ME400'].includes(course.id) && (window.currentTotalCredits || 0) < 100) {
             e.target.checked = false;
             
             // Visual Feedback
