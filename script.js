@@ -905,8 +905,8 @@ function drawArrows() {
               const yTarget = targetMetrics.y + targetMetrics.h;
               
               // Draw U-shape connecting the bottoms
-              // Go down below the lowest card
-              const yLoop = Math.max(ySource, yTarget) + 20;
+              // Go down below the lowest card (reduced depth to 8px)
+              const yLoop = Math.max(ySource, yTarget) + 8;
 
               // Parallel wires
               const offsets = [-3, 3]; 
