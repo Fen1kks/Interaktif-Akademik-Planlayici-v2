@@ -454,3 +454,34 @@ body {
     display: none; 
   }
 }
+
+/* Attribution Footer */
+.attribution {
+  position: fixed;
+  bottom: 1rem;
+  right: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--c-text-muted);
+  font-weight: 500;
+  z-index: 1000;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.attribution:hover {
+  opacity: 1;
+}
+
+.author-name {
+  color: var(--c-primary);
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .attribution {
+    font-size: 0.75rem;
+    bottom: 0.5rem;
+    right: 1rem;
+  }
+}
