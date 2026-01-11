@@ -598,7 +598,8 @@ body {
   .metric-label {
     font-size: 0.65rem;
   }
-  
+}
+
 /* Attribution Footer */
 .attribution {
   position: fixed;
