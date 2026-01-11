@@ -457,16 +457,68 @@ body {
 /* Tablet & Mobile Spacing Optimizations */
 @media (max-width: 900px) {
   .curriculum-grid {
-    gap: 0 2rem; /* Reduce horizontal gap from 4rem to 2rem */
-    margin: 0; /* Reset vertical margin to prevent centering gap on mobile */
+    gap: 0 1.5rem; /* Tighter horizontal gap */
+    margin: 0;
+    padding-bottom: 6rem; /* Extra space for fixed elements */
   }
 
   .course-card + .course-card {
-    margin-top: 1rem; /* Reduce vertical gap from 2rem to 1rem */
+    margin-top: 1rem;
   }
   
   .term-column {
-    gap: 0.5rem; /* Tighter column spacing */
+    gap: 0.5rem;
+  }
+
+  /* Miniature Card Styling for Mobile */
+  .course-card {
+      padding: 0.35rem; /* Reduced padding */
+      min-height: 55px; /* Smaller height */
+      border-radius: 4px;
+      border-left-width: 4px; /* Thinner status strip */
+  }
+  
+  .course-id {
+      font-size: 0.6rem; /* Smaller ID text */
+      padding: 0px 3px;
+  }
+  
+  .course-name {
+      font-size: 0.65rem; /* Smaller Course Name */
+      line-height: 1.1;
+  }
+  
+  .course-credits {
+      font-size: 0.6rem !important;
+  }
+  
+  .card-controls {
+      padding-top: 0.2rem;
+      gap: 0.4rem;
+  }
+  
+  /* Compact Checkbox */
+  .custom-checkbox {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+  }
+  .custom-checkbox svg {
+      width: 12px;
+      height: 12px;
+      stroke-width: 4;
+  }
+  
+  /* Compact Grade Select */
+  .grade-select {
+      font-size: 0.7rem;
+      padding: 0 0.2rem;
+      height: 18px;
+  }
+
+  /* Adjust Term Header */
+  .term-name {
+      font-size: 0.8rem;
   }
 
   /* Hide scrollbars on mobile/tablet for cleaner touch experience */
