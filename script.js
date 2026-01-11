@@ -227,6 +227,25 @@ function isLocked(courseId, checkCoreqs = true, ignoreCreditLimit = false) {
   return false;
 }
 
+function toggleCredit(courseId, event) {
+    if (event) event.stopPropagation();
+    
+    const course = getCourse(courseId);
+    if (!course || !Array.isArray(course.credits)) return;
+
+    if (!state[courseId]) {
+        state[courseId] = { completed: false, grade: "" };
+    }
+
+    const current = state[courseId].selectedCredit || course.credits[0];
+    const currentIndex = course.credits.indexOf(current);
+    const nextIndex = (currentIndex + 1) % course.credits.length;
+    
+    state[courseId].selectedCredit = course.credits[nextIndex];
+    saveState();
+    render(); 
+}
+
 function calculateMetrics() {
   let totalCredits = 0;
   let weightedSum = 0;
@@ -237,13 +256,18 @@ function calculateMetrics() {
     const course = getCourse(id);
     // Ignore Credit Limit when summing up credits to avoid cyclical dependency
     if (course && s.completed && !isLocked(id, true, true)) {
+      
+      const availableCredits = Array.isArray(course.credits) 
+          ? (s.selectedCredit || course.credits[0]) 
+          : course.credits;
+
       if (s.grade !== "FF") {
-        earnedCredits += course.credits;
+        earnedCredits += availableCredits;
       }
       
       if (s.grade && s.grade !== "" && GRADES[s.grade] !== undefined) {
-        weightedSum += course.credits * GRADES[s.grade];
-        totalCredits += course.credits;
+        weightedSum += availableCredits * GRADES[s.grade];
+        totalCredits += availableCredits;
       }
     }
   });
@@ -345,14 +369,19 @@ function createCard(course) {
     data.grade === "FF" ? "#dc2626" : data.completed ? gradeColor : "#cbd5e1"
   );
   
-  // Custom Credit Display (e.g. for Summer Practice requiring 100 credits)
-  let creditDisplay = `${course.credits} Credit`;
+  // Custom Credit Display
+  let isVariable = Array.isArray(course.credits);
+  let currentCredit = isVariable 
+      ? (data.selectedCredit || course.credits[0]) 
+      : course.credits;
+
+  let creditDisplay = `${currentCredit} Credit${isVariable ? " ▾" : ""}`;
   const creditReq = course.prereqs.find(p => p.match(/^\d+\s+Credits?$/i));
   
   if (creditReq) {
       const num = creditReq.match(/\d+/)[0];
-      if (course.credits > 0) {
-          creditDisplay = `${course.credits} Cr | Req: ${num}`;
+      if (currentCredit > 0) {
+          creditDisplay = `${currentCredit} Cr${isVariable ? " ▾" : ""} | Req: ${num}`;
       } else {
           creditDisplay = `Req: ${num}<br>Credits`;
       }
@@ -370,6 +399,8 @@ function createCard(course) {
   const selectStyle = `color: ${
     !data.grade || data.grade === "" ? "var(--c-text-muted)" : (data.grade === "FF" || data.completed ? gradeColor : "#9ca3af")
   }; font-weight: bold;`;
+  
+  const variableCreditStyle = isVariable ? "cursor: pointer; text-decoration: underline dotted;" : "";
 
   card.innerHTML = `
         <div class="locked-icon">
@@ -395,7 +426,11 @@ function createCard(course) {
                 </div>
             </label>
 
-            <div class="course-credits" style="font-size: 0.75rem; font-weight: 600; line-height: 1.1; text-align: center; color: ${creditReq ? 'var(--c-primary)' : 'var(--c-text-muted)'};">${creditDisplay}</div>
+            <div class="course-credits" 
+                 ${isVariable ? `onclick="toggleCredit('${course.id}', event)"` : ""}
+                 style="font-size: 0.75rem; font-weight: 600; line-height: 1.1; text-align: center; color: ${creditReq ? 'var(--c-primary)' : 'var(--c-text-muted)'}; ${variableCreditStyle}">
+                 ${creditDisplay}
+            </div>
 
             <select class="grade-select" ${locked ? "disabled" : ""} style="${selectStyle}">
                 <option value="" ${data.grade === "" || !data.grade ? "selected" : ""}>--</option>
