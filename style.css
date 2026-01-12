@@ -721,6 +721,13 @@ body {
   opacity: 0.7;
   transition: opacity 0.3s;
   pointer-events: none; /* Let clicks pass through if it covers something important */
+  
+  /* Flex Layout for Alignment */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Default Desktop: Right Aligned */
+  gap: 8px;
+  text-align: right;
 }
 
 .attribution:hover {
@@ -736,7 +743,14 @@ body {
   .attribution {
     font-size: 0.65rem;
     bottom: 0.25rem;
-    right: 0.5rem;
+    
+    /* Split Layout: Button Left, Text Right */
+    left: 0.5rem;
+    right: 0.5rem; /* Span Width */
+    
+    flex-direction: row-reverse; /* Reverses order: [Button] ... [Text] */
+    justify-content: space-between;
+    align-items: center;
   }
 }
 /* Special Summer Practice Card (Moved to end for precedence) */

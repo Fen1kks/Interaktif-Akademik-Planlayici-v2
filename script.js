@@ -451,10 +451,8 @@ function createCard(course) {
   }
 
   // Interactive Logic
-  // Interactive Logic
   if (locked) {
       card.style.cursor = "pointer";
-      // onclick removed in favor of addEventListener below
   } else {
     card.style.cursor = "default";
   }
@@ -560,7 +558,7 @@ function createCard(course) {
     
     allCards.forEach(card => {
       card.classList.remove("dependency-highlight");
-      card.classList.remove("highlight-source"); // Remove active source class
+      card.classList.remove("highlight-source");
       card.removeAttribute("data-was-locked");
       card.style.boxShadow = ""; 
     });
@@ -735,7 +733,7 @@ function findBestYGap(collisionRegions, targetY, minY, maxY) {
         const gapEnd = next.y1;
         const gapSize = gapEnd - gapStart;
 
-        if (gapSize > 5) { // Threshold reduced from 15 for tighter mobile spacing
+        if (gapSize > 5) {
             const gapCenter = gapStart + gapSize / 2;
             const dist = Math.abs(gapCenter - targetY);
             if (dist < minDist) {
@@ -1191,8 +1189,6 @@ window.addEventListener("resize", () => {
 });
 
 // START
-// START
-// Initialize the system once all scripts are loaded
 // Initialize the system once all scripts are loaded
 window.addEventListener('load', () => {
     initSystem();
@@ -1202,7 +1198,6 @@ window.addEventListener('load', () => {
 });
 
 // Setup Global Listeners
-// Setup Global Listeners (Event Delegation)
 document.addEventListener('click', (e) => {
     // Reset Button Logic
     const resetBtn = e.target.closest("#reset-btn");
@@ -1241,3 +1236,40 @@ document.addEventListener('click', (e) => {
         }
     }
 });
+
+
+/* =========================================================================
+   8. FOOTER & DONATION WIDGET
+   ========================================================================= */
+
+function injectFooter() {
+    const footerHtml = `
+    <div class="attribution">
+        <div>Created by <span class="author-name">Hızır Ketenci</span></div>
+        <a href="https://donate.bynogame.com/fen1kks" target="_blank" style="text-decoration: none; pointer-events: auto;">
+            <div style="
+                background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+                color: white;
+                padding: 6px 12px;
+                border-radius: 8px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                transition: transform 0.2s;
+            " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                ByNoGame ile Destekle
+            </div>
+        </a>
+    </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', footerHtml);
+}
+
+// Initial Call
+injectFooter();
