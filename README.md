@@ -30,10 +30,4 @@ Ders seçim dönemlerinde hangi dersin hangisine bağlı olduğunu (prerequisite
 
 ## 🗺️ Gelecek Planları (Roadmap)
 
-Projemizi geliştirmeye devam ediyoruz! İşte yakında eklenecek özellikler:
-
-- **🏗️ Bölüm Desteği Genişletilmesi:**
-  - Elektrik-Elektronik Mühendisliği
-  - Bilgisayar Mühendisliği
-  - Biyomedikal Mühendisliği
 - **🔄 Çift Anadal (ÇAP) Sistemi:** İki farklı bölümün ders programını aynı anda görüntüleme ve çakışma kontrolü.
