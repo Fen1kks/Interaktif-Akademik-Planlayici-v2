@@ -244,6 +244,43 @@ body {
     background: rgba(127, 29, 29, 0.4) !important; /* Deep Red Background */
 }
 
+/* Modal Actions (for Reset Confirmation) */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.modal-btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.modal-btn.cancel {
+    background: transparent;
+    color: var(--c-text-muted);
+    border: 1px solid var(--c-surface-border);
+}
+
+.modal-btn.cancel:hover {
+    background: var(--c-surface-border);
+    color: var(--c-text-main);
+}
+
+.modal-btn.confirm {
+    background: var(--c-danger);
+    color: white;
+}
+
+.modal-btn.confirm:hover {
+    filter: brightness(1.1);
+}
+
 /* =========================================================================
    3. LAYOUT & GRID
    ========================================================================= */

@@ -67,6 +67,23 @@
       </main>
     </div>
 
+    <!-- Reset Confirmation Modal -->
+    <div id="reset-modal-overlay" class="theme-modal-overlay">
+        <div class="theme-modal">
+            <div class="theme-modal-header">
+                <h3>Confirm Reset</h3>
+                <button class="close-btn" onclick="closeResetModal()">✕</button>
+            </div>
+            <div style="color: var(--c-text-main); margin-bottom: 1rem;">
+                Are you sure you want to reset?
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeResetModal()">Cancel</button>
+                <button class="modal-btn confirm" id="confirm-reset-btn">Yes, Reset</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="theme.js"></script>
     <script src="data/registry.js?v=3"></script>

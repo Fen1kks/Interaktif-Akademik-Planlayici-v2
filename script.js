@@ -191,18 +191,37 @@ function cascadeUncheck(courseId) {
 
 
 // 3. Bind Reset Buttons (Desktop & Mobile)
+// 3. Bind Reset Buttons (Desktop & Mobile)
 const resetBtns = document.querySelectorAll(".reset-btn");
+const resetModal = document.getElementById("reset-modal-overlay");
+const confirmResetBtn = document.getElementById("confirm-reset-btn");
+
+// Global close function for the onclick handlers in HTML
+window.closeResetModal = function() {
+    if (resetModal) resetModal.style.display = "none";
+};
+
 resetBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (confirm("Are you sure you want to reset all grades and progress?")) {
-            state = {};
-            saveState();
-            render();
-            // Force reload to clear visual artifacts
-            location.reload(); 
-        }
+        if (resetModal) resetModal.style.display = "flex";
     });
 });
+
+if (confirmResetBtn) {
+    confirmResetBtn.addEventListener("click", () => {
+        state = {};
+        saveState();
+        render();
+        location.reload(); 
+    });
+}
+
+// Close on background click
+if (resetModal) {
+    resetModal.addEventListener("click", (e) => {
+        if (e.target === resetModal) window.closeResetModal();
+    });
+}
 
 
 /* =========================================================================
