@@ -71,6 +71,7 @@ Proje, **merkezi havuz sistemi** ile %80 kod tekrarını azaltır:
 
 - **🔄 Çift Anadal (ÇAP) Sistemi:** İki farklı bölümün ders programını aynı anda görüntüleme ve çakışma kontrolü.
 
+
 ---
 
 **⭐ Projeyi beğendiyseniz yıldız vermeyi unutmayın!**
