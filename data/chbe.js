@@ -5,7 +5,7 @@ window.registerDepartment("CHBE", {
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "CHEM111", name: "General Chemistry I", credits: 3, prereqs: [], term: 1 },
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
       { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: [], term: 1 },
 
       // FRESHMAN - TERM 2
@@ -14,7 +14,7 @@ window.registerDepartment("CHBE", {
       { id: "CHEM113", name: "General Chemistry Lab.", credits: 2, prereqs: [], term: 2, coreqs: ["CHEM112!"] },
       { id: "CHEM112", name: "General Chemistry II", credits: 3, prereqs: ["CHEM111"], term: 2, coreqs: ["CHEM113!"] },
       { id: "CHBE102", name: "Intro. to CHBE", credits: 2, prereqs: [], term: 2 },
-      { id: "REXX3", name: "Restricted Elective", credits: 3, prereqs: [], term: 2 },
+      { id: "REXX3", name: "Restricted Elective", credits: 3, prereqs: [], term: 2, options: rexxPool1 },
       
       // SOPHOMORE - TERM 3
       { id: "MATH241", name: "Diff. Equations", credits: 4, prereqs: ["MATH132"], term: 3 },
@@ -39,7 +39,7 @@ window.registerDepartment("CHBE", {
       { id: "FEXX2", name: "Free Elective", credits: 3, prereqs: [], term: 5 },
       { id: "REXX5", name: "Restricted Elective", credits: 3, prereqs: [], term: 5 },
       { id: "CHBE361", name: "Mat. in CHBE App.", credits: 3, prereqs: [], term: 5 },
-      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 5 },
+      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 5, options: turkishPool1 },
 
       // JUNIOR - TERM 6
       { id: "CHBE302", name: "Exp. CHBE II", credits: 2, prereqs: ["CHBE301"], term: 6 },
@@ -47,7 +47,7 @@ window.registerDepartment("CHBE", {
       { id: "CHBE362", name: "Reactor Design", credits: 3, prereqs: ["CHBE213"], term: 6, coreqs: ["CHBE386!"] },
       { id: "CHBE333", name: "Mass Transfer", credits: 3, prereqs: ["CHBE214!", "CHBE215"], term: 6 },
       { id: "REXX6", name: "Restricted Elective", credits: 3, prereqs: [], term: 6 },
-      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 6 },
+      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 6, options: turkishPool1 },
 
       // SENIOR - TERM 7
       { id: "CHBE400", name: "Summer Practice", credits: 0, prereqs: ["CHBE102"], term: 7 },

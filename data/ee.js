@@ -2,21 +2,21 @@ window.registerDepartment("EE", {
     name: "Electrical-Electronics Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
-      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 1 },
+      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 1, options: turkishPool1 },
       { id: "CHEM101", name: "Chemistry", credits: 4, prereqs: [], term: 1 },
       { id: "EE102", name: "Intro. to EE", credits: 2, prereqs: [], term: 1 },
       { id: "HUM103", name: "Humanities", credits: 2, prereqs: [], term: 1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
 
       // FRESHMAN - TERM 2
-      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 2 },
+      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 2, options: turkishPool1 },
       { id: "ES112", name: "Algorithms & Prog.", credits: 4, prereqs: [], term: 2 },
       { id: "MATH221", name: "Linear Algebra", credits: 3, prereqs: [], term: 2 },
       { id: "PHYS102", name: "Physics II", credits: 4, prereqs: ["PHYS101"], term: 2 },
       { id: "MATH132", name: "Calculus II", credits: 4, prereqs: ["MATH131"], term: 2 },
-      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: [], term: 2 },
+      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: [], term: 2, options: rexxPool1 },
       
       // SOPHOMORE - TERM 3
       { id: "ES272", name: "Numerical Analysis", credits: 3, prereqs: ["ES112", "MATH132"], term: 3 },

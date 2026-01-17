@@ -2,14 +2,14 @@ window.registerDepartment("CSE", {
     name: "Computer Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "CSE101", name: "CSE Concepts & Algo.", credits: 4, prereqs: [], term: 1 },
       { id: "GBE113", name: "General Biology", credits: 4, prereqs: [], term: 1 },
       
       // FRESHMAN - TERM 2
-      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2 },
+      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: rexxPool1 },
       { id: "MATH132", name: "Calculus II", credits: 4, prereqs: ["MATH131"], term: 2 },
       { id: "PHYS102", name: "Physics II", credits: 4, prereqs: ["PHYS101"], term: 2 },
       { id: "CSE114", name: "Fund. of Comp. Prog.", credits: 5, prereqs: [], term: 2 },
@@ -17,7 +17,7 @@ window.registerDepartment("CSE", {
       
       // SOPHOMORE - TERM 3
       { id: "HUM103", name: "Humanities", credits: 2, prereqs: [], term: 3 },
-      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 3 },
+      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 3, options: turkishPool1 },
       { id: "MATH221", name: "Linear Algebra", credits: 3, prereqs: [], term: 3 },
       { id: "EE211", name: "Circuit Theory", credits: 4, prereqs: [], term: 3 },
       { id: "CSE211", name: "Data Structures", credits: 4, prereqs: ["CSE114"], term: 3 },
@@ -26,7 +26,7 @@ window.registerDepartment("CSE", {
       // SOPHOMORE - TERM 4
       { id: "MATH241", name: "Diff. Equations", credits: 4, prereqs: ["MATH132"], term: 4 },
       { id: "MATH281", name: "Probability", credits: 3, prereqs: ["MATH132"], term: 4 },
-      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 4 },
+      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 4, options: turkishPool1 },
       { id: "CSE212", name: "Software Dev. Method.", credits: 3, prereqs: ["CSE114"], term: 4 },
       { id: "CSE232", name: "System Programming", credits: 3, prereqs: ["CSE114"], term: 4 },
       { id: "CSE224", name: "Intro. to Digital Sys.", credits: 4, prereqs: ["CSE221"], term: 4 },

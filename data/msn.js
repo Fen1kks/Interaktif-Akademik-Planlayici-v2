@@ -15,7 +15,7 @@ window.registerDepartment("MSN", {
       { id: "MSN112", name: "Statics & Strength of Mat.", credits: 3, prereqs: ["PHYS101"], term: 2 },
       { id: "MSN102", name: "Fund. of Material Sci.", credits: 3, prereqs: [], term: 2 },
       { id: "CHEM112", name: "General Chemistry II", credits: 3, prereqs: ["CHEM111"], term: 2 },
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 2 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 2, options: rexxPool1 },
 
       // SOPHOMORE - TERM 3
       { id: "MATH241", name: "Diff. Equations", credits: 4, prereqs: ["MATH132"], term: 3 },
@@ -23,15 +23,15 @@ window.registerDepartment("MSN", {
       { id: "MATH221", name: "Linear Algebra", credits: 3, prereqs: [], term: 3 },
       { id: "MSN213", name: "Material Thermo.", credits: 3, prereqs: [], term: 3 },
       { id: "MSN223", name: "Mech. Behavior of Mat.", credits: 2, prereqs: [], term: 3 },
-      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 3 },
-      { id: "REXX2", name: "Restricted Elective", credits: [3, 4], prereqs: [], term: 3 },
+      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 3, options: turkishPool1 },
+      { id: "REXX2", name: "Restricted Elective", credits: [3, 4], prereqs: [], term: 3, options: rexxPool1 },
 
       // SOPHOMORE - TERM 4
       { id: "MSN230", name: "Transport Phenomena", credits: 3, prereqs: ["MATH241"], term: 4 },
       { id: "MSN220", name: "Mat. Characterization I", credits: 3, prereqs: [], term: 4 },
       { id: "MSN240", name: "Phase Diagrams", credits: 3, prereqs: ["MSN213"], term: 4 },
       { id: "MSN218", name: "Fund. of Nanoscience", credits: 3, prereqs: ["CHEM112"], term: 4 },
-      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 4 },
+      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 4, options: turkishPool1 },
       { id: "FEXX1", name: "Free Elective", credits: 3, prereqs: [], term: 4 },
 
       // JUNIOR - TERM 5

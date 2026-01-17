@@ -336,9 +336,17 @@ function calculateMetrics() {
     // Ignore Credit Limit when summing up credits to avoid cyclical dependency
     if (course && s.completed && !isLocked(id, true, true)) {
       
-      const availableCredits = Array.isArray(course.credits) 
-          ? (s.selectedCredit || course.credits[0]) 
-          : course.credits;
+      let finalCredits = course.credits;
+
+      // 1. Check for Option Override (e.g. EE102=3, EE103=4)
+      if (course.options && s.selectedOption !== undefined && course.options[s.selectedOption]) {
+           const opt = course.options[s.selectedOption];
+           if (opt.credits !== undefined) finalCredits = opt.credits;
+      }
+      
+      const availableCredits = Array.isArray(finalCredits) 
+          ? (s.selectedCredit || finalCredits[0]) 
+          : finalCredits;
 
       if (s.grade !== "FF") {
         earnedCredits += availableCredits;
@@ -485,9 +493,23 @@ function createCard(course) {
 
   // 4. Logic: Footer (Credits & Requirements)
   let isVariable = Array.isArray(course.credits);
+  let variableCreditStyle = isVariable ? "cursor: pointer; text-decoration: underline dotted;" : "";
   let currentCredit = isVariable 
       ? (data.selectedCredit || course.credits[0]) 
       : course.credits;
+
+  // 4.1 Check for Option Override (UI Display)
+  if (course.options && data.selectedOption !== undefined && course.options[data.selectedOption]) {
+       const opt = course.options[data.selectedOption];
+       if (opt.credits !== undefined) {
+           currentCredit = opt.credits;
+           // If option fixes the credit, disable toggle style unless option credits is ALSO an array (rare but possible)
+           if (!Array.isArray(opt.credits)) {
+               isVariable = false; 
+               variableCreditStyle = ""; 
+           }
+       }
+  }
 
   // A) Credit Line
   let showCreditLine = false;
@@ -576,8 +598,19 @@ function createCard(course) {
   const selectStyle = `color: ${
     !data.grade || data.grade === "" ? "var(--c-text-muted)" : (data.grade === "FF" || data.completed ? gradeColor : "#9ca3af")
   }; font-weight: bold;`;
-  
-  const variableCreditStyle = isVariable ? "cursor: pointer; text-decoration: underline dotted;" : "";
+
+   // 4.1 Check for Selected Option (for VLOOKUP style)
+  let displayId = course.id;
+  let displayName = course.name;
+  let selectedOptionIdx = -1;
+
+  if (course.options && Array.isArray(course.options)) {
+       if (data.selectedOption !== undefined && course.options[data.selectedOption]) {
+            selectedOptionIdx = data.selectedOption;
+            displayId = course.options[selectedOptionIdx].id;
+            displayName = course.options[selectedOptionIdx].name;
+       }
+  }
 
   card.innerHTML = `
         <div class="locked-icon">
@@ -585,10 +618,23 @@ function createCard(course) {
             <path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM12 10C12 10 9 10 9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H12Z" />
           </svg>
         </div>
-        <div class="card-header">
+        <div class="card-header" style="position: relative;">
             <div style="display: flex; align-items: baseline; gap: 8px; width: 100%;">
-                <span class="course-id">${course.id}</span>
-                <div class="course-name" title="${course.name}" style="position: relative; top: -1px;">${course.name}</div>
+                <span class="course-id">${displayId}</span>
+                <div class="course-name" title="${displayName}" style="position: relative; top: -1px;">${displayName}</div>
+                ${course.options ? `
+                <div class="course-options-wrapper" style="position: absolute; inset: 0; opacity: 0; cursor: pointer;">
+                    <select class="course-options-select" style="width: 100%; height: 100%; cursor: pointer;">
+                        ${!course.options.some(o => o.name === course.name) ? `<option value="-1" ${selectedOptionIdx === -1 ? 'selected' : ''}>${course.name}</option>` : ''}
+                        ${course.options.map((opt, idx) => `
+                            <option value="${idx}" ${selectedOptionIdx === idx ? 'selected' : ''}>${opt.id} - ${opt.name}</option>
+                        `).join("")}
+                    </select>
+                </div>
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" class="options-icon" style="margin-left: auto; color: var(--c-text-muted); min-width: 14px;">
+                     <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+                ` : ''}
             </div>
             ${prereqHTML}
         </div>
@@ -617,7 +663,23 @@ function createCard(course) {
     `;
 
   const checkbox = card.querySelector('input[type="checkbox"]');
-  const select = card.querySelector("select");
+  const select = card.querySelector("select.grade-select");
+  const optionsSelect = card.querySelector("select.course-options-select");
+
+  if (optionsSelect) {
+      optionsSelect.addEventListener("change", (e) => {
+          const val = parseInt(e.target.value);
+          if (!state[course.id]) {
+            state[course.id] = { completed: false, grade: "" };
+          }
+          state[course.id].selectedOption = val;
+          saveState();
+          render(); // Re-render to update ID and Name
+      });
+
+      // Prevent card click when clicking select
+      optionsSelect.addEventListener("click", (e) => e.stopPropagation());
+  }
 
   checkbox.addEventListener("change", (e) => {
     const isChecked = e.target.checked;

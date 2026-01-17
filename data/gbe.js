@@ -2,14 +2,14 @@ window.registerDepartment("GBE", {
     name: "Genetics and Bioengineering",
     curriculum: [
       // FRESHMAN - TERM 1
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "CHEM111", name: "General Chemistry I", credits: 3, prereqs: [], term: 1 },
       { id: "GBE111", name: "Biology", credits: 4, prereqs: [], term: 1 },
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
 
       // FRESHMAN - TERM 2
-      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2 },
+      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: rexxPool1 },
       { id: "PHYS102", name: "Physics II", credits: 4, prereqs: ["PHYS101"], term: 2 },
       { id: "CHEM112", name: "General Chemistry II", credits: 3, prereqs: ["CHEM111"], term: 2, coreqs: ["CHEM113"] },
       { id: "CHEM113", name: "General Chemistry Lab.", credits: 2, prereqs: [], term: 2, coreqs: ["CHEM112"] },
@@ -37,14 +37,14 @@ window.registerDepartment("GBE", {
       { id: "GBE361", name: "Biotransport Phenomena", credits: 3, prereqs: ["GBE222"], term: 5 },
       { id: "GBE321", name: "Biothermodynamics", credits: 3, prereqs: [], term: 5 },
       { id: "FEXX1", name: "Free Elective", credits: 3, prereqs: [], term: 5 },
-      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 5 },
+      { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 5, options: turkishPool1 },
 
       // JUNIOR - TERM 6
       { id: "GBE302", name: "Biochemistry II", credits: 4, prereqs: ["GBE301"], term: 6 },
       { id: "GBE342", name: "Gene Eng. Tech. II", credits: 4, prereqs: ["GBE341"], term: 6 },
       { id: "GBE326", name: "Exp. GBE I", credits: 3, prereqs: [], term: 6 },
       { id: "REXX6", name: "Restricted Elective", credits: 3, prereqs: [], term: 6 },
-      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 6 },
+      { id: "TKL202", name: "Turkish II", credits: 2, prereqs: [], term: 6, options: turkishPool1 },
 
       // SENIOR - TERM 7
       { id: "GBE400", name: "Summer Practice", credits: 0, prereqs: ["GBE301", "GBE341"], term: 7 },
