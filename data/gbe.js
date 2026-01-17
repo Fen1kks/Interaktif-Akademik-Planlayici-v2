@@ -2,14 +2,14 @@ window.registerDepartment("GBE", {
     name: "Genetics and Bioengineering",
     curriculum: [
       // FRESHMAN - TERM 1
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: englishPool },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "CHEM111", name: "General Chemistry I", credits: 3, prereqs: [], term: 1 },
       { id: "GBE111", name: "Biology", credits: 4, prereqs: [], term: 1 },
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
 
       // FRESHMAN - TERM 2
-      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: rexxPool1 },
+      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: englishPool },
       { id: "PHYS102", name: "Physics II", credits: 4, prereqs: ["PHYS101"], term: 2 },
       { id: "CHEM112", name: "General Chemistry II", credits: 3, prereqs: ["CHEM111"], term: 2, coreqs: ["CHEM113"] },
       { id: "CHEM113", name: "General Chemistry Lab.", credits: 2, prereqs: [], term: 2, coreqs: ["CHEM112"] },

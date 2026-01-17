@@ -15,10 +15,17 @@ window.turkishPool1.sort((a, b) => a.id.localeCompare(b.id));
 window.turkishPool2.sort((a, b) => a.id.localeCompare(b.id));
 
 // Academic English Pool (REXX1/REXX2)
-window.rexxPool1 = [
+window.englishPool = [
     { id: "AFE131", name: "Academic English I", credits: 3 },
     { id: "AFE132", name: "Academic English II", credits: 3 },
     { id: "AFEA111", name: "English Speaking I", credits: 3 },
     { id: "AFEA112", name: "English Speaking II", credits: 3 },
     { id: "ES176", name: "Research & Tech. Writing", credits: 3 }
+].sort((a, b) => a.id.localeCompare(b.id));
+
+// Programming / Computational
+window.programmingPool = [
+    { id: "ES112", name: "Algo. & Prog.", credits: 4 },
+    { id: "ES117", name: "Sci. Comp. w/ Octave", credits: 3 },
+    { id: "ES118", name: "Sci. Comp. w/ Python", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));

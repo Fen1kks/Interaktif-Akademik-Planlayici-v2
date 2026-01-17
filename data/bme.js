@@ -2,7 +2,7 @@ window.registerDepartment("BME", {
     name: "Biomedical Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: englishPool },
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "CHEM101", name: "Chemistry", credits: 4, prereqs: [], term: 1 },
@@ -10,12 +10,12 @@ window.registerDepartment("BME", {
       { id: "ES161", name: "Engineering Drawing", credits: 2, prereqs: [], term: 1 },
 
       // FRESHMAN - TERM 2
-      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: rexxPool1 },
+      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: englishPool },
       { id: "MATH132", name: "Calculus II", credits: 4, prereqs: ["MATH131"], term: 2 },
       { id: "PHYS102", name: "Physics II", credits: 4, prereqs: ["PHYS101"], term: 2 },
       { id: "MATH221", name: "Linear Algebra", credits: 3, prereqs: [], term: 2 },
       { id: "HUM103", name: "Humanities", credits: 2, prereqs: [], term: 2 },
-      { id: "REXX3", name: "Restricted Elective", credits: [3, 4], prereqs: [], term: 2 },
+      { id: "REXX3", name: "Restricted Elective", credits: 3, prereqs: [], term: 2, options: programmingPool },
 
       // SOPHOMORE - TERM 3
       { id: "MATH241", name: "Diff. Equations", credits: 4, prereqs: ["MATH132"], term: 3 },

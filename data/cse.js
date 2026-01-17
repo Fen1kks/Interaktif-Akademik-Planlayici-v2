@@ -2,14 +2,14 @@ window.registerDepartment("CSE", {
     name: "Computer Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: englishPool },
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "CSE101", name: "CSE Concepts & Algo.", credits: 4, prereqs: [], term: 1 },
       { id: "GBE113", name: "General Biology", credits: 4, prereqs: [], term: 1 },
       
       // FRESHMAN - TERM 2
-      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: rexxPool1 },
+      { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: ["REXX1"], term: 2, options: englishPool },
       { id: "MATH132", name: "Calculus II", credits: 4, prereqs: ["MATH131"], term: 2 },
       { id: "PHYS102", name: "Physics II", credits: 4, prereqs: ["PHYS101"], term: 2 },
       { id: "CSE114", name: "Fund. of Comp. Prog.", credits: 5, prereqs: [], term: 2 },

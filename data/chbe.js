@@ -5,7 +5,7 @@ window.registerDepartment("CHBE", {
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "CHEM111", name: "General Chemistry I", credits: 3, prereqs: [], term: 1 },
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: englishPool },
       { id: "REXX2", name: "Restricted Elective", credits: 3, prereqs: [], term: 1 },
 
       // FRESHMAN - TERM 2
@@ -14,7 +14,7 @@ window.registerDepartment("CHBE", {
       { id: "CHEM113", name: "General Chemistry Lab.", credits: 2, prereqs: [], term: 2, coreqs: ["CHEM112!"] },
       { id: "CHEM112", name: "General Chemistry II", credits: 3, prereqs: ["CHEM111"], term: 2, coreqs: ["CHEM113!"] },
       { id: "CHBE102", name: "Intro. to CHBE", credits: 2, prereqs: [], term: 2 },
-      { id: "REXX3", name: "Restricted Elective", credits: 3, prereqs: [], term: 2, options: rexxPool1 },
+      { id: "REXX3", name: "Restricted Elective", credits: 3, prereqs: [], term: 2, options: englishPool },
       
       // SOPHOMORE - TERM 3
       { id: "MATH241", name: "Diff. Equations", credits: 4, prereqs: ["MATH132"], term: 3 },

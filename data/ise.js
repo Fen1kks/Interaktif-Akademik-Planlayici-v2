@@ -6,7 +6,7 @@ window.registerDepartment("ISE", {
       { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
       { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
       { id: "HUM103", name: "Humanities", credits: 2, prereqs: [], term: 1 },
-      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: rexxPool1 },
+      { id: "REXX1", name: "Restricted Elective", credits: 3, prereqs: [], term: 1, options: englishPool },
       { id: "REXX2", name: "Restricted Elective", credits: 2, prereqs: [], term: 1 },
 
       // FRESHMAN - TERM 2
