@@ -301,7 +301,7 @@ body {
 
 .curriculum-grid {
   display: grid;
-  grid-template-columns: repeat(8, max-content);
+  grid-template-columns: repeat(9, max-content);
   gap: 0 4rem;
   padding: 0 1rem 4rem 1rem;
   position: relative; /* Anchor for absolute SVG arrows */

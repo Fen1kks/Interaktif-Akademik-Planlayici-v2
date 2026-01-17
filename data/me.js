@@ -64,5 +64,13 @@ window.registerDepartment("ME", {
       { id: "ME492", name: "Graduation Project", credits: 4, prereqs: [], term: 8 },
       { id: "FEXX3", name: "Free Elective", credits: 3, prereqs: [], term: 8 },
       { id: "HTR302", name: "History of TR II", credits: 2, prereqs: [], term: 8 },
+
+      // EXTRA COURSES - TERM 9
+      { id: "EXTRA-1", name: "Extra Course 1", credits: [3, 4, 2], prereqs: [], term: 9 },
+      { id: "EXTRA-2", name: "Extra Course 2", credits: [3, 4, 2], prereqs: [], term: 9 },
+      { id: "EXTRA-3", name: "Extra Course 3", credits: [3, 4, 2], prereqs: [], term: 9 },
+      { id: "EXTRA-4", name: "Extra Course 4", credits: [3, 4, 2], prereqs: [], term: 9 },
+      { id: "EXTRA-5", name: "Extra Course 5", credits: [3, 4, 2], prereqs: [], term: 9 },
+      { id: "EXTRA-6", name: "Extra Course 6", credits: [3, 4, 2], prereqs: [], term: 9 }
     ]
 });

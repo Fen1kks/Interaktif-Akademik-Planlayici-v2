@@ -110,10 +110,9 @@ function loadDepartment(code) {
     }
 
     const deptData = window.departments[code];
-    curriculum = deptData.curriculum; // Shallow copy reference
-    
-    // Update Title
     deptTitle.textContent = `Department of ${deptData.name}`;
+
+    curriculum = deptData.curriculum; // Shallow copy reference
 
     // Clean Data (Filter unknown prereqs - Scoped to this dept + Allow Credit Reqs)
     const allIds = new Set(curriculum.map((c) => c.id));
@@ -390,7 +389,7 @@ function render() {
   svg.style.overflow = "visible";
   grid.appendChild(svg);
   
-  const terms = [1, 2, 3, 4, 5, 6, 7, 8];
+  const terms = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   terms.forEach((term) => {
     const courses = curriculum.filter((c) => c.term === term);
@@ -408,9 +407,16 @@ function render() {
     const col = document.createElement("div");
     col.className = "term-column"; 
     
+    let headerHTML = "";
+    if (term === 9) {
+        headerHTML = `<div class="term-name" style="font-weight: 700; font-size: 0.9rem; color: var(--c-text-muted);">Ekstra / Transfer</div>`;
+    } else {
+        headerHTML = `<div class="term-name" style="font-weight: 700; font-size: 0.9rem; color: var(--c-primary);">${yearNum}${suffix(yearNum)} Year - ${semesterName}</div>`;
+    }
+
     col.innerHTML = `
             <div class="term-header">
-                <div class="term-name" style="font-weight: 700; font-size: 0.9rem; color: var(--c-primary);">${yearNum}${suffix(yearNum)} Year - ${semesterName}</div>
+                ${headerHTML}
             </div>
         `;
 
