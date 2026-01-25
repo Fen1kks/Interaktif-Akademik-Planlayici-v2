@@ -267,8 +267,8 @@ body {
 
 /* Dark Mode Adjustment for Reset Button */
 [data-theme="dark"] .reset-btn:hover {
-  color: #fca5a5; /* Softer, Pastel Red */
-  background: rgba(127, 29, 29, 0.4) !important; /* Deep Red Background */
+  color: #fca5a5;
+  background: rgba(127, 29, 29, 0.4) !important;
 }
 
 /* Modal Actions (for Reset Confirmation) */
@@ -323,7 +323,7 @@ body {
   padding-top: 0;
   padding-bottom: 0.5rem; /* Very minimal padding to forbid excess scroll */
   width: 100%;
-  min-height: 0; /* Critical for nested flex scrolling */
+  min-height: 0;
 }
 
 .curriculum-grid {
@@ -334,7 +334,7 @@ body {
   position: relative; /* Anchor for absolute SVG arrows */
   transform-origin: top center;
   transition: transform 0.2s ease-out;
-  margin: auto; /* Safe centering: centers if space exists, start-aligns if overflow */
+  margin: auto;
 }
 
 /* Scrollbar Customization */
@@ -597,7 +597,7 @@ body {
 
 .arrow-path {
   fill: none;
-  stroke-width: 2px; /* Restored to 2px for Desktop */
+  stroke-width: 2px;
   opacity: 0.8;
   transition:
     opacity 0.3s,
@@ -605,9 +605,8 @@ body {
 }
 
 .arrow-path.active {
-  stroke: var(--c-primary);
   opacity: 1;
-  stroke-width: 3px; /* Restored to 3px for Desktop */
+  stroke-width: 3px;
 }
 
 .arrow-path.locked {
@@ -717,12 +716,12 @@ body {
   z-index: 100;
   opacity: 0.7;
   transition: opacity 0.3s;
-  pointer-events: none; /* Let clicks pass through if it covers something important */
+  pointer-events: none;
 
   /* Flex Layout for Alignment */
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Default Desktop: Right Aligned */
+  align-items: flex-end;
   gap: 8px;
   text-align: right;
 }
@@ -736,6 +735,24 @@ body {
   font-weight: 700;
 }
 
+.donate-btn {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.donate-btn:hover {
+    transform: translateY(-2px);
+}
+
 @media (max-width: 600px) {
   .attribution {
     font-size: 0.65rem;
@@ -743,13 +760,14 @@ body {
 
     /* Split Layout: Button Left, Text Right */
     left: 0.5rem;
-    right: 0.5rem; /* Span Width */
+    right: 0.5rem;
 
-    flex-direction: row-reverse; /* Reverses order: [Button] ... [Text] */
+    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
   }
 }
+
 /* Special Summer Practice Card (Moved to end for precedence) */
 .course-card.summer-practice {
   border: 2px dashed var(--c-primary) !important;
@@ -840,4 +858,46 @@ body.simulation-active .course-card.simulation-added .course-id {
 .theme-rose body.simulation-active .course-card.completed:not(.simulation-added) .course-id {
     background-color: #475569 !important;
     color: #e2e8f0 !important;
+}
+
+/* Flash Attention Animation */
+@keyframes flashRed {
+    0%, 100% { border-color: #eee; box-shadow: none; }
+    50% { border-color: var(--c-danger); box-shadow: 0 0 8px rgba(220, 38, 38, 0.4); }
+}
+
+.grade-select.flash-attention {
+    animation: flashRed 1s ease;
+    border-color: var(--c-danger);
+}
+
+/* =========================================================================
+   8. PWA ADJUSTMENTS (iOS Standalone Mode)
+   ========================================================================= */
+/* JavaScript adds 'pwa-standalone' class to body when running as PWA */
+body.pwa-standalone .attribution {
+  bottom: calc(1.25rem + env(safe-area-inset-bottom)) !important;
+  justify-content: center !important;
+  gap: 10px !important;
+}
+
+body.pwa-standalone .grid-wrapper {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+/* Credit Selector Flash Attention Animation */
+@keyframes flashCredit {
+    0%, 100% { 
+        background: transparent; 
+        box-shadow: none; 
+    }
+    50% { 
+        background: rgba(37, 99, 235, 0.15); 
+        box-shadow: 0 0 8px rgba(37, 99, 235, 0.5); 
+    }
+}
+
+.flash-credit-attention {
+    animation: flashCredit 0.5s ease 3;
+    border-radius: 4px;
 }

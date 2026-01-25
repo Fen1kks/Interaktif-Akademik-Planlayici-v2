@@ -1,25 +1,31 @@
+import { Department, CourseOption } from '../../types';
+import { 
+    turkishPool1, englishPool, commonTechnicalElectives 
+} from '../common';
+import { freeElectives } from '../free-electives';
+
 // REXX2: Intro to Computing
-const chbeRexxPool2 = [
+const chbeRexxPool2: CourseOption[] = [
     { id: "ES118", name: "Sci. Comp. w/ Python", credits: 3 },
     { id: "ACM114", name: "Intro. Comp. Sci.", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX4: Economics
-const chbeRexxPool4 = [
+const chbeRexxPool4: CourseOption[] = [
     { id: "ECON294", name: "Econ. for Eng.", credits: 3 },
     { id: "ECON122", name: "Fund. Macroecon.", credits: 3 },
     { id: "ECON111", name: "Fund. Microecon.", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX5: Management
-const chbeRexxPool5 = [
+const chbeRexxPool5: CourseOption[] = [
     { id: "BBA102", name: "Intro. to Mgmt.", credits: 3 },
     { id: "BBA244", name: "Fin. Accounting", credits: 3 },
     { id: "ES301", name: "Eng. Mgmt.", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX6, 7: Departmental Electives (CHBE Core)
-const chbeDeptElectives = [
+const chbeDeptElectives: CourseOption[] = [
     { id: "CHBE351", name: "Inorganic Tech.", credits: 3 },
     { id: "CHBE477", name: "Fuel Cells & Corr.", credits: 3 },
     { id: "CHBE352", name: "Organic Tech.", credits: 3 },
@@ -42,14 +48,14 @@ const chbeDeptElectives = [
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX8, 9: Technical Electives (Interdisciplinary + CHBE Core)
-const chbeTechnicalElectives = [
+const chbeTechnicalElectives: CourseOption[] = [
     // Include all Departmental Electives
     ...chbeDeptElectives,
     // Common Technical Electives (Deduplicated)
-    ...window.commonTechnicalElectives.filter(c => !chbeDeptElectives.some(d => d.id === c.id))
+    ...commonTechnicalElectives.filter(c => !chbeDeptElectives.some(d => d.id === c.id))
 ].sort((a, b) => a.id.localeCompare(b.id));
 
-window.registerDepartment("CHBE", {
+export const CHBE: Department = {
     name: "Chemical Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
@@ -118,11 +124,11 @@ window.registerDepartment("CHBE", {
       { id: "HTR302", name: "History of TR II", credits: 2, prereqs: [], term: 8 },
 
       // EXTRA COURSES - TERM 9
-      { id: "EXTRA-1", name: "Extra Course 1", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-2", name: "Extra Course 2", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-3", name: "Extra Course 3", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-4", name: "Extra Course 4", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-5", name: "Extra Course 5", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-6", name: "Extra Course 6", credits: [3, 4, 2], prereqs: [], term: 9 }
+      { id: "EXTRA-1", name: "Extra Course 1", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-2", name: "Extra Course 2", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-3", name: "Extra Course 3", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-4", name: "Extra Course 4", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-5", name: "Extra Course 5", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-6", name: "Extra Course 6", credits: [0, 2, 3, 4], prereqs: [], term: 9 }
     ]
-});
+};

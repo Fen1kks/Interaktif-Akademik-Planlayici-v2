@@ -18,7 +18,7 @@
 /* 2. Theme Definitions */
 
 /* --- LIGHT THEME (Default) --- */
-.theme-light {
+:root, [data-theme="light"] {
     --c-bg: #f8fafc;
     --c-surface: #ffffff;
     --c-surface-border: #e2e8f0;
@@ -41,7 +41,7 @@
 }
 
 /* --- DARK THEME --- */
-.theme-dark {
+[data-theme="dark"] {
     --c-bg: #1a1b26;
     --c-surface: #24283b;
     --c-surface-border: #414868;
@@ -64,7 +64,7 @@
 }
 
 /* --- ROSE THEME --- */
-.theme-rose {
+[data-theme="rose"] {
     --c-bg: #fff0f5; /* Lavender Blush */
     --c-surface: #ffffff;
     --c-surface-border: #fbcfe8; /* Pink 200 */

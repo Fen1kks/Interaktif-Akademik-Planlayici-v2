@@ -1,5 +1,11 @@
+import { Department, CourseOption } from '../../types';
+import { 
+    turkishPool1, englishPool 
+} from '../common';
+import { freeElectives } from '../free-electives';
+
 // REXX3: Management / Economics
-const msnRexxPool3 = [
+const msnRexxPool3: CourseOption[] = [
     { id: "ECON294", name: "Econ. for Eng.", credits: 3 },
     { id: "BBA101", name: "Intro. to Business", credits: 3 },
     { id: "BBA261", name: "Marketing Princ.", credits: 3 },
@@ -8,35 +14,35 @@ const msnRexxPool3 = [
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX4: Nano & Textiles
-const msnRexxPool4 = [
+const msnRexxPool4: CourseOption[] = [
     { id: "MSN430", name: "Fiber Sci. & Nano Textiles", credits: 3 },
     { id: "MSN455", name: "Smart Nanomat.", credits: 3 },
     { id: "MSN405", name: "Nanomat. & Nanotech.", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX5: Metals & Manufacturing
-const msnRexxPool5 = [
+const msnRexxPool5: CourseOption[] = [
     { id: "MSN407", name: "Metallic Mat. & Alloys", credits: 3 },
     { id: "MSN471", name: "Casting Tech.", credits: 3 },
     { id: "MSN409", name: "Manuf. Tech. of Metals", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX6: Bio / Glass / Energy
-const msnRexxPool6 = [
+const msnRexxPool6: CourseOption[] = [
     { id: "MSN420", name: "Fund. of Biomat.", credits: 3 },
     { id: "MSN453", name: "Glass Sci. & Tech.", credits: 3 },
     { id: "MSN487", name: "Energy Mat.", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX7: Surface / Thin Films
-const msnRexxPool7 = [
+const msnRexxPool7: CourseOption[] = [
     { id: "MSN486", name: "Funct. Thin Films", credits: 3 },
     { id: "MSN484", name: "Surface Sci. & Eng.", credits: 3 },
     { id: "MSN477", name: "Corrosion & Protection", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX8, 9: Technical Electives
-const msnTechnicalElectives = [
+const msnTechnicalElectives: CourseOption[] = [
     { id: "MSN407", name: "Metallic Mat. & Alloys", credits: 3 },
     { id: "MSN420", name: "Fund. of Biomat.", credits: 3 },
     { id: "MSN430", name: "Fiber Sci. & Nano Textiles", credits: 3 },
@@ -47,7 +53,7 @@ const msnTechnicalElectives = [
     { id: "MSN486", name: "Funct. Thin Films", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
-window.registerDepartment("MSN", {
+export const MSN: Department = {
     name: "Material Science and Nanotechnology Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
@@ -73,7 +79,7 @@ window.registerDepartment("MSN", {
       { id: "MSN213", name: "Material Thermo.", credits: 3, prereqs: [], term: 3 },
       { id: "MSN223", name: "Mech. Behavior of Mat.", credits: 2, prereqs: [], term: 3 },
       { id: "TKL201", name: "Turkish I", credits: 2, prereqs: [], term: 3, options: turkishPool1 },
-      { id: "REXX2", name: "Restricted Elective", credits: [3, 4], prereqs: [], term: 3, options: englishPool },
+      { id: "REXX2", name: "Restricted Elective", credits: [3, 4], prereqs: [], term: 3, options: englishPool }, // credits: [3, 4] is handled as array in types? Yes, Course['credits'] is number | number[]
 
       // SOPHOMORE - TERM 4
       { id: "MSN230", name: "Transport Phenomena", credits: 3, prereqs: ["MATH241"], term: 4 },
@@ -118,11 +124,11 @@ window.registerDepartment("MSN", {
       { id: "FEXX4", name: "Free Elective", credits: 3, prereqs: [], term: 8, options: freeElectives },
 
       // EXTRA COURSES - TERM 9
-      { id: "EXTRA-1", name: "Extra Course 1", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-2", name: "Extra Course 2", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-3", name: "Extra Course 3", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-4", name: "Extra Course 4", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-5", name: "Extra Course 5", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-6", name: "Extra Course 6", credits: [3, 4, 2], prereqs: [], term: 9 }
+      { id: "EXTRA-1", name: "Extra Course 1", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-2", name: "Extra Course 2", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-3", name: "Extra Course 3", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-4", name: "Extra Course 4", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-5", name: "Extra Course 5", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-6", name: "Extra Course 6", credits: [0, 2, 3, 4], prereqs: [], term: 9 }
     ]
-});
+};

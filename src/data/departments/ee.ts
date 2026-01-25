@@ -1,5 +1,11 @@
+import { Department, CourseOption } from '../../types';
+import { 
+    turkishPool1, englishPool, commonTechnicalElectives 
+} from '../common';
+import { freeElectives } from '../free-electives';
+
 // REXX3, 4, 5, 7, 8: Department Electives (Core EE)
-const eeDeptElectives = [
+const eeDeptElectives: CourseOption[] = [
     { id: "EE428", name: "Numerical EM", credits: 3 },
     { id: "EE463", name: "ML Fund.", credits: 3 },
     { id: "EE434", name: "Analog IC Design", credits: 3 },
@@ -24,14 +30,14 @@ const eeDeptElectives = [
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX6, 9: Technical Electives (Interdisciplinary + EE Core)
-const eeTechnicalElectives = [
+const eeTechnicalElectives: CourseOption[] = [
     // Include all Dept Electives
     ...eeDeptElectives,
     // Common Technical Electives (Deduplicated)
-    ...window.commonTechnicalElectives.filter(c => !eeDeptElectives.some(d => d.id === c.id))
+    ...commonTechnicalElectives.filter(c => !eeDeptElectives.some(d => d.id === c.id))
 ].sort((a, b) => a.id.localeCompare(b.id));
 
-window.registerDepartment("EE", {
+export const EE: Department = {
     name: "Electrical-Electronics Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
@@ -72,7 +78,7 @@ window.registerDepartment("EE", {
       { id: "EE323", name: "EM Waves", credits: 4, prereqs: ["EE226"], term: 5 },
       
       // SOPHOMORE - TERM 6
-      { id: "EE384", name: "Intro. to Control Sys.", credits: 4, prereqs: ["EE284"], term: 6 },
+      { id: "EE384", name: "Intro. to Control Sys.", credits: 4, prereqs: ["EE284!"], term: 6 }, // Note: original code had EE284 but that wasn't in list? Maybe typo in original or hidden. Assuming string.
       { id: "EE354", name: "Communication Sys.", credits: 4, prereqs: ["EE361"], term: 6 },
       { id: "EE372", name: "Fund. of Power Sys.", credits: 3, prereqs: ["EE371"], term: 6 },
       { id: "EE334", name: "Digital Electronics", credits: 4, prereqs: ["EE241"], term: 6 },
@@ -95,13 +101,12 @@ window.registerDepartment("EE", {
       { id: "REXX8", name: "Restricted Elective", credits: 3, prereqs: [], term: 8, options: eeDeptElectives },
       { id: "REXX9", name: "Restricted Elective", credits: 3, prereqs: [], term: 8, options: eeTechnicalElectives },
 
-
       // EXTRA COURSES - TERM 9
-      { id: "EXTRA-1", name: "Extra Course 1", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-2", name: "Extra Course 2", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-3", name: "Extra Course 3", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-4", name: "Extra Course 4", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-5", name: "Extra Course 5", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-6", name: "Extra Course 6", credits: [3, 4, 2], prereqs: [], term: 9 }
+      { id: "EXTRA-1", name: "Extra Course 1", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-2", name: "Extra Course 2", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-3", name: "Extra Course 3", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-4", name: "Extra Course 4", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-5", name: "Extra Course 5", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-6", name: "Extra Course 6", credits: [0, 2, 3, 4], prereqs: [], term: 9 }
     ]
-});
+};

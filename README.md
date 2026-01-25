@@ -8,9 +8,29 @@ Projeyi hemen dene: [İnteraktif Akademik Planlayıcı](https://fen1kks.github.i
 
 Makine Mühendisliği öğrencileri için özel olarak geliştirilmiş; ders ön koşullarını görselleştiren, akademik rotanızı planlamanızı sağlayan ve gelecekteki not ortalamanızı simüle eden interaktif bir web aracı.
 
+## 📥 Kurulum ve Çalıştırma
+
+Proje artık **Vite + TypeScript** altyapısını kullanmaktadır. Geliştirme ortamını kurmak için:
+
+1.  **Bağımlılıkları Yükle:**
+    ```bash
+    npm install
+    ```
+
+2.  **Geliştirme Sunucusunu Başlat:**
+    ```bash
+    npm run dev
+    ```
+    Tarayıcınızda (genellikle `http://localhost:5173`) projeyi görüntüleyebilirsiniz.
+
+3.  **Production Build Al:**
+    ```bash
+    npm run build
+    ```
+
 ## 🤝 Katkıda Bulunma
 
-Yeni bir bölüm eklemek veya mevcut bölümleri geliştirmek ister misiniz? [CONTRIBUTING.md](CONTRIBUTING.md) dosyasında detaylı rehber bulabilirsiniz.
+Yeni bir bölüm eklemek veya mevcut bölümleri geliştirmek ister misiniz? **[CONTRIBUTING.md](CONTRIBUTING.md)** dosyasında detaylı rehber bulabilirsiniz.
 
 ## ❓ Neden Bu Proje?
 
@@ -36,8 +56,9 @@ Ders seçim dönemlerinde hangi dersin hangisine bağlı olduğunu (prerequisite
 
 - **🌐 500+ Serbest Seçmeli:** Üniversite genelinde sunulan tüm serbest seçmeli dersler tek havuzda.
 - **🔧 Teknik Seçmeliler:** Bölümler arası ortak teknik seçmeli havuzu (ES310, MTH424, CSE480, vb.).
-- **💡 Dinamik Kredi Sistemi:** Seçtiğiniz dersin kredisi otomatik olarak slot'a yansır (3, 4, veya 2 kredi).
+- **💡 Dinamik Kredi Sistemi:** Dersin kredisini (0, 2, 3, 4 vb.) kullanıcı seçebilir.
 - **🎯 Akıllı Filtreleme:** Her bölüm kendi özel seçmeli havuzlarını kullanır, tekrar eden dersler otomatik filtrelenir.
+- **📱 PWA Desteği:** iOS ve Android cihazlarda uygulamayı ana ekrana ekleyerek tam ekran deneyimi yaşayabilirsiniz.
 
 ### 🏛️ Desteklenen Bölümler
 
@@ -52,20 +73,21 @@ Ders seçim dönemlerinde hangi dersin hangisine bağlı olduğunu (prerequisite
 
 ## 🛠️ Kullanılan Teknolojiler
 
+- **Vite** - Ultra hızlı frontend geliştirme aracı
+- **TypeScript** - Tip güvenliği ve ölçeklenebilirlik
 - **HTML5 & CSS3** - Modern HSL Renk Paleti, Flexbox/Grid Layout
-- **Vanilla JavaScript (ES6+)** - Spread Syntax, Arrow Functions, LocalStorage API
 - **SVG** - Dinamik Bezier Eğrileri ile Ok Çizimi
-- **Modüler Mimari** - Bölüm bazlı veri dosyaları, merkezi havuz sistemi
+- **Modüler Mimari** - Ayrıştırılmış veri ve logic katmanları
 
 ## 🏗️ Veri Mimarisi
 
-Proje, **merkezi havuz sistemi** ile %80 kod tekrarını azaltır:
+Proje, **`src/data/`** altında modüler bir yapı kullanır:
 
-- **`z_common.js`** - Ortak havuzlar (İngilizce, Programlama, Teknik Seçmeliler, 500+ Serbest Seçmeli)
-- **`z_registry.js`** - Bölüm kayıt sistemi
-- **`data/[dept].js`** - Her bölümün özel müfredatı ve seçmeli havuzları
-- **Spread Syntax Kullanımı** - `...window.commonTechnicalElectives` ile merkezi havuzdan miras alma
-- **Akıllı Deduplication** - `.filter()` ile tekrar eden derslerin otomatik elenmesi
+- **`src/data/departments/*.ts`** - Her bölümün özel müfredatı (ME, CSE vb.) **burada bulunur**.
+- **`src/data/common.ts`** - Ortak havuzlar (İngilizce, Programlama, Teknik Seçmeliler)
+- **`src/data/registry.ts`** - Bölüm kayıt sistemi
+- **`src/logic.ts`** - Hesaplama ve kilit mantığı (Saf fonksiyonlar)
+- **`src/visuals.ts`** - Görselleştirme motoru
 
 ## 🗺️ Gelecek Planları (Roadmap)
 

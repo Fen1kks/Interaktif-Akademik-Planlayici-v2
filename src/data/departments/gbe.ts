@@ -1,11 +1,17 @@
+import { Department, CourseOption } from '../../types';
+import { 
+    turkishPool1, englishPool, programmingPool, commonTechnicalElectives 
+} from '../common';
+import { freeElectives } from '../free-electives';
+
 // REXX3: GBE Intro
-const gbeRexxPool3 = [
+const gbeRexxPool3: CourseOption[] = [
     { id: "GBE102", name: "Biology II", credits: 3 },
     { id: "GBE104", name: "Intro. to GBE", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX5: Management / Economics
-const gbeRexxPool5 = [
+const gbeRexxPool5: CourseOption[] = [
     { id: "BBA412", name: "Entrepreneurship", credits: 3 },
     { id: "ECON294", name: "Econ. for Eng.", credits: 3 },
     { id: "BBA101", name: "Intro. to Business", credits: 3 },
@@ -17,7 +23,7 @@ const gbeRexxPool5 = [
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX6, 7: Departmental Electives (Core GBE)
-const gbeDeptElectives = [
+const gbeDeptElectives: CourseOption[] = [
     { id: "GBE312", name: "Immunology", credits: 3 },
     { id: "GBE324", name: "Neurobiology", credits: 3 },
     { id: "GBE356", name: "Plant Genetics", credits: 3 },
@@ -39,7 +45,7 @@ const gbeDeptElectives = [
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX8: Management II (Similar to REXX5 but fewer options)
-const gbeRexxPool8 = [
+const gbeRexxPool8: CourseOption[] = [
     { id: "BBA102", name: "Fund. of Mgmt.", credits: 3 },
     { id: "BBA101", name: "Intro. to Business", credits: 3 },
     { id: "ES301", name: "Eng. Mgmt.", credits: 3 },
@@ -47,16 +53,16 @@ const gbeRexxPool8 = [
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX9: Technical Electives (Interdisciplinary + GBE Core)
-const gbeTechnicalElectives = [
+const gbeTechnicalElectives: CourseOption[] = [
     // Include all Dept Electives
     ...gbeDeptElectives,
     // Explicit GBE Technicals
     { id: "BTEC536", name: "Stem Cell Bio.", credits: 3 },
     // Common Technical Electives (Deduplicated)
-    ...window.commonTechnicalElectives.filter(c => !gbeDeptElectives.some(d => d.id === c.id))
+    ...commonTechnicalElectives.filter(c => !gbeDeptElectives.some(d => d.id === c.id))
 ].sort((a, b) => a.id.localeCompare(b.id));
 
-window.registerDepartment("GBE", {
+export const GBE: Department = {
     name: "Genetics and Bioengineering",
     curriculum: [
       // FRESHMAN - TERM 1
@@ -122,11 +128,11 @@ window.registerDepartment("GBE", {
       { id: "HTR302", name: "History of TR II", credits: 2, prereqs: [], term: 8 },
 
       // EXTRA COURSES - TERM 9
-      { id: "EXTRA-1", name: "Extra Course 1", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-2", name: "Extra Course 2", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-3", name: "Extra Course 3", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-4", name: "Extra Course 4", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-5", name: "Extra Course 5", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-6", name: "Extra Course 6", credits: [3, 4, 2], prereqs: [], term: 9 }
+      { id: "EXTRA-1", name: "Extra Course 1", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-2", name: "Extra Course 2", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-3", name: "Extra Course 3", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-4", name: "Extra Course 4", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-5", name: "Extra Course 5", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-6", name: "Extra Course 6", credits: [0, 2, 3, 4], prereqs: [], term: 9 }
     ]
-});
+};

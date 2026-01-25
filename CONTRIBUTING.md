@@ -1,122 +1,102 @@
 # 🤝 Katkıda Bulunma Rehberi
 
-Bu proje açık kaynaklıdır ve katkılarınızı memnuniyetle karşılıyoruz! Bu rehber, yeni bir bölüm eklemek veya mevcut bölümleri güncellemek isteyenler için adım adım talimatlar içerir.
+Interaktif Akademik Planlayıcı projesine katkıda bulunmak istediğiniz için teşekkürler! 🎉
+
+Bu proje **Vite** ve **TypeScript** altyapısını kullanmaktadır. İster kod geliştirmesi yapın, ister yeni bir bölüm müfredatı ekleyin, bu rehber size yardımcı olacaktır.
 
 ## 📋 İçindekiler
 
-- [Yeni Bölüm Ekleme](#-yeni-bölüm-ekleme)
-- [Veri Yapısı Açıklaması](#-veri-yapısı-açıklaması)
-- [Ön Koşul Türleri](#-ön-koşul-türleri)
-- [Seçmeli Havuzları](#-seçmeli-havuzları)
-- [Sıralama ve Formatlar](#-sıralama-ve-formatlar)
-- [Test Etme](#-test-etme)
+1. [🚀 Kurulum ve Geliştirme Ortamı](#-kurulum-ve-geliştirme-ortamı)
+2. [🎓 Yeni Bölüm Ekleme](#-yeni-bölüm-ekleme)
+3. [📊 Veri Yapısı ve Kurallar](#-veri-yapısı-ve-kurallar)
+4. [📚 Seçmeli Havuzları](#-seçmeli-havuzları)
+5. [🧪 Test Etme ve Gönderme](#-test-etme-ve-gönderme)
 
 ---
+
+## 🚀 Kurulum ve Geliştirme Ortamı
+
+Projeyi yerel bilgisayarınızda çalıştırmak için aşağıdaki adımları izleyin.
+
+### Gereksinimler
+- **Node.js** (Sürüm 18 veya üzeri önerilir)
+- **npm** (Node.js ile birlikte gelir)
+
+### Adım Adım Kurulum
+
+1. **Projeyi Klonlayın:**
+   ```bash
+   git clone https://github.com/fen1kks/Interaktif-Akademik-Planlayici .
+2. **Bağımlılıkları Yükleyin:**
+   ```bash
+   npm install
+3. **Geliştirme Sunucusunu Başlatın:** Kodlamaya başlamak için bu komutu çalıştırın. Tarayıcınızda otomatik olarak açılacaktır (Genellikle `http://localhost:5173`).
 
 ## 🎓 Yeni Bölüm Ekleme
 
 ### Adım 1: Bölüm Dosyası Oluşturma
 
-`data/` klasörüne yeni bir `.js` dosyası ekleyin. Dosya adı bölüm kodu olmalıdır (örn: `me.js` için Makine Mühendisliği).
+`src/data/departments/` klasörüne yeni bir `.ts` dosyası ekleyin. Dosya adı bölüm kodu olmalıdır (örn: `me.ts` için Makine Mühendisliği).
 
-```javascript
-// data/me.js
+**Örnek Şablon (`src/data/departments/me.ts`):**
+
+```typescript
+import { Department, CourseOption } from '../../types';
+import { 
+    englishPool, commonTechnicalElectives 
+} from '../common';
+import { freeElectives } from '../free-electives';
 
 // 1. Bölüme özel seçmeli havuzlarını tanımlayın (isteğe bağlı)
-const meRexxPool3 = [
+const meRexxPool3: CourseOption[] = [
   { id: "ME301", name: "Kısa Ders Adı", credits: 3 },
   { id: "ME302", name: "Başka Ders", credits: 3 },
 ].sort((a, b) => a.id.localeCompare(b.id));
 
-// 2. Bölümü kaydedin
-window.registerDepartment("ME", {
+// 2. Bölümü export edin
+export const ME: Department = {
   name: "Mechanical Engineering",
   curriculum: [
     // Derslerinizi buraya ekleyin (aşağıda detaylı açıklama var)
   ],
-});
+};
 ```
 
 ### Adım 2: Müfredatı Tanımlama
 
 Her ders için şu formatı kullanın:
 
-```javascript
+```typescript
 {
-    id: "MATH131",           // Ders kodu (benzersiz olmalı)
-    name: "Calculus I",      // Ders adı (kısa ve ingilizce, max 20 karakter önerilir
-    credits: 4,              // Kredi sayısı (veya [3, 4, 2] gibi array)
-    prereqs: ["MATH101"],    // Ön koşul dersleri (array)
-    coreqs: ["PHYS101"],     // Eş koşul dersleri (isteğe bağlı)
-    term: 1,                 // Dönem numarası (1-8 arası, 9 = ekstra)
-    options: englishPool     // Seçmeli havuzu (isteğe bağlı)
+    id: "MATH131",         // Ders kodu (benzersiz olmalı)
+    name: "Calculus I",    // Ders adı (kısa ve ingilizce, max 20 karakter önerilir)
+    credits: 4,            // Kredi sayısı (veya [3, 4, 2] gibi array)
+    prereqs: ["MATH101"],  // Ön koşul dersleri (array)
+    coreqs: ["PHYS101"],   // Eş koşul dersleri (isteğe bağlı)
+    term: 1,               // Dönem numarası (1-8 arası, 9 = ekstra)
+    options: englishPool   // Seçmeli havuzu (isteğe bağlı)
 }
 ```
 
-**Örnek Tam Müfredat:**
+### Adım 3: Bölümü Kaydetme
 
-```javascript
-curriculum: [
-  // FRESHMAN - TERM 1
-  { id: "MATH131", name: "Calculus I", credits: 4, prereqs: [], term: 1 },
-  { id: "PHYS101", name: "Physics I", credits: 4, prereqs: [], term: 1 },
-  {
-    id: "REXX1",
-    name: "Restricted Elective",
-    credits: 3,
-    prereqs: [],
-    term: 1,
-    options: englishPool,
-  },
+Yeni dosyanızı `src/data/registry.ts` dosyasına ekleyin:
 
-  // FRESHMAN - TERM 2
-  {
-    id: "MATH132",
-    name: "Calculus II",
-    credits: 4,
-    prereqs: ["MATH131"],
-    term: 2,
-  },
-  {
-    id: "PHYS102",
-    name: "Physics II",
-    credits: 4,
-    prereqs: ["PHYS101"],
-    term: 2,
-    coreqs: ["PHYS103"],
-  },
-  {
-    id: "PHYS103",
-    name: "Physics Lab",
-    credits: 2,
-    prereqs: [],
-    term: 2,
-    coreqs: ["PHYS102"],
-  },
+```typescript
+import { ME } from './departments/me';
+// ... diğer importlar
 
-  // ... diğer dönemler
-
-  // EXTRA COURSES - TERM 9
-  {
-    id: "EXTRA-1",
-    name: "Extra Course 1",
-    credits: [3, 4, 2],
-    prereqs: [],
-    term: 9,
-  },
-  {
-    id: "EXTRA-2",
-    name: "Extra Course 2",
-    credits: [3, 4, 2],
-    prereqs: [],
-    term: 9,
-  },
-];
+export const departments: DepartmentRegistry = {
+    ME,
+    // ... diğer bölümler
+};
 ```
 
 ---
 
 ## 📊 Veri Yapısı Açıklaması
+
+Tüm veriler `src/types.ts` dosyasındaki `Course` ve `Department` arayüzlerine uygun olmalıdır.
 
 ### Zorunlu Alanlar
 
@@ -124,7 +104,7 @@ curriculum: [
 | --------- | ------------ | --------------------------------------------------------- |
 | `id`      | String       | Benzersiz ders kodu (örn: "MATH131")                      |
 | `name`    | String       | Ders adı (kısa ve öz)                                     |
-| `credits` | Number/Array | Kredi sayısı (3, 4) veya değişken krediler için [3, 4, 2] |
+| `credits` | Number/Array | Kredi sayısı (3, 4) veya değişken krediler için `[0, 2, 3, 4]` gibi array. |
 | `prereqs` | Array        | Ön koşul ders kodları listesi                             |
 | `term`    | Number       | Dönem numarası (1-8 normal, 9 ekstra)                     |
 
@@ -143,7 +123,7 @@ curriculum: [
 
 Dersi geçmiş olmanız gerekir (DD veya üstü).
 
-```javascript
+```typescript
 prereqs: ["MATH131", "PHYS101"];
 ```
 
@@ -151,7 +131,7 @@ prereqs: ["MATH131", "PHYS101"];
 
 Dersi almış olmanız yeterlidir (FF bile olsa). Ders kodunun sonuna `!` ekleyin.
 
-```javascript
+```typescript
 prereqs: ["CHEM101!"]; // CHEM101'i almış olmak yeterli, geçmek şart değil
 ```
 
@@ -159,13 +139,10 @@ prereqs: ["CHEM101!"]; // CHEM101'i almış olmak yeterli, geçmek şart değil
 
 Aynı dönemde alınması gereken dersler.
 
-```javascript
+```typescript
 {
     id: "PHYS102",
-    name: "Physics II",
-    credits: 4,
-    prereqs: ["PHYS101"],
-    term: 2,
+    // ...
     coreqs: ["PHYS103"]  // PHYS103 ile birlikte alınmalı
 }
 ```
@@ -174,7 +151,7 @@ Aynı dönemde alınması gereken dersler.
 
 "En az X adet YYY kodlu ders" gibi esnek kurallar.
 
-```javascript
+```typescript
 prereqs: [
   "ME211",
   {
@@ -187,148 +164,68 @@ prereqs: [
 ];
 ```
 
-**Örnek:** "ME363 ve en az 5 adet ME3XX dersi"
-
 ---
 
 ## 📚 Seçmeli Havuzları
 
-### Mevcut Ortak Havuzlar (`z_common.js`)
+### Mevcut Ortak Havuzlar (`src/data/common.ts`)
 
-Projenin merkezi havuz sistemi sayesinde, bu havuzları doğrudan kullanabilirsiniz:
+Projenin merkezi havuz sistemi sayesinde, bu havuzları import ederek kullanabilirsiniz:
 
-```javascript
-// İngilizce Seçmelileri (REXX1, REXX2)
-options: englishPool;
+```typescript
+import { englishPool, programmingPool, commonTechnicalElectives } from '../common';
+import { freeElectives } from '../free-electives';
+
+// İngilizce Seçmelileri (REXX1)
+options: englishPool
 
 // Programlama Seçmelileri (REXX3)
-options: programmingPool;
+options: programmingPool
 
-// Türkçe Seçmelileri
-options: turkishPool1; // veya turkishPool2
+// Teknik Seçmeliler
+options: commonTechnicalElectives
 
-// Teknik Seçmeliler (Bölümler arası ortak)
-options: window.commonTechnicalElectives;
-
-// Serbest Seçmeliler (500+ ders)
-options: freeElectives;
+// Serbest Seçmeliler
+options: freeElectives
 ```
 
-### Bölüme Özel Havuz Oluşturma
-
-```javascript
-// Dosyanın başında tanımlayın
-const ieRexxPool4 = [
-    { id: "IE401", name: "Operations Research", credits: 3 },
-    { id: "IE402", name: "Supply Chain Mgmt", credits: 3 },
-    { id: "IE403", name: "Quality Control", credits: 3 }
-].sort((a, b) => a.id.localeCompare(b.id));  // ÖNEMLİ: Alfabetik sıralama
-
-// Müfredatta kullanın
-{ id: "REXX4", name: "Restricted Elective", credits: 3, prereqs: [], term: 4, options: ieRexxPool4 }
-```
-
-### Ortak Havuzdan Miras Alma (Spread Syntax)
+### Ortak Havuzdan Miras Alma
 
 Teknik seçmeliler için ortak havuzu kullanıp, bölüme özel dersleri ekleyin:
 
-```javascript
-const ieTechnicalElectives = [
+```typescript
+const ieTechnicalElectives: CourseOption[] = [
   // Bölüme özel dersler
   { id: "IE450", name: "Simulation", credits: 3 },
-  { id: "IE451", name: "Optimization", credits: 3 },
-
-  // Ortak havuzdan miras al (tekrarları filtrele)
-  ...window.commonTechnicalElectives.filter(
-    (c) => !["IE450", "IE451"].includes(c.id), // Kendi derslerinizi hariç tutun
-  ),
-].sort((a, b) => a.id.localeCompare(b.id));
-```
-
----
-
-## 🔤 Sıralama ve Formatlar
-
-### Ders Adı Kısaltmaları
-
-Dropdown menülerde okunabilirlik için ders adlarını kısaltın:
-
-```javascript
-// ❌ KÖTÜ (çok uzun)
-{ id: "ME211", name: "Thermodynamics and Heat Transfer I", credits: 3 }
-
-// ✅ İYİ (kısa ve öz)
-{ id: "ME211", name: "Thermo I", credits: 3 }
-```
-
-**Kısaltma Önerileri:**
-
-- `Introduction to` → `Intro to` veya `Intro`
-- `Engineering` → `Eng.`
-- `Laboratory` → `Lab.`
-- `Management` → `Mgmt.`
-- `Mathematics` → `Math.`
-- `Computer` → `Comp.`
-
-### Alfabetik Sıralama
-
-**Tüm seçmeli havuzları alfabetik olarak sıralayın:**
-
-```javascript
-const myPool = [
-  { id: "CSE301", name: "...", credits: 3 },
-  { id: "CSE302", name: "...", credits: 3 },
-].sort((a, b) => a.id.localeCompare(b.id)); // ÖNEMLİ!
-```
-
-### Müfredat Sıralaması
-
-Müfredattaki dersleri **dönem ve mantıksal sıraya** göre düzenleyin:
-
-```javascript
-curriculum: [
-    // FRESHMAN - TERM 1
-    { id: "MATH131", ... },
-    { id: "PHYS101", ... },
-
-    // FRESHMAN - TERM 2
-    { id: "MATH132", ... },
-    { id: "PHYS102", ... },
-
-    // ... (Dönem yorumları ekleyin)
-]
+  
+  // Ortak havuzdan miras al (filtersiz)
+  ...commonTechnicalElectives
+].sort((a, b) => a.id.localeCompare(b.id)); // Alfabetik sıralama şart
 ```
 
 ---
 
 ## 🧪 Test Etme
 
-### 1. Dosyayı Kontrol Edin
+### 1. TypeScript Kontrolü
 
-Tarayıcı konsolunda hata var mı kontrol edin:
+Verilerinizde hata olup olmadığını görmek için projeyi derleyin:
 
-- `F12` → Console sekmesi
-- Kırmızı hata mesajları olmamalı
+```bash
+npm run build
+```
 
-### 2. Bölümü Seçin
+Hata almazsanız her şey yolunda demektir.
 
-Dropdown'dan yeni bölümünüzü seçin ve müfredatın doğru yüklendiğini kontrol edin.
-
-### 3. Ön Koşulları Test Edin
-
-- Bir dersin üzerine gelin, okların doğru çizildiğini kontrol edin
-- Ön koşulu olmayan bir dersi seçmeye çalışın, kilit sistemi çalışmalı
-
-### 4. Seçmeli Havuzlarını Test Edin
-
-- REXX/FEXX slotlarına tıklayın
-- Dropdown'da doğru dersler görünmeli
-- Tekrar eden ders olmamalı
-
-### 5. GPA Hesaplamasını Test Edin
-
-- Birkaç ders seçip not verin
-- CGPA'nın doğru hesaplandığını kontrol edin
+### 2. Canlı Önizleme
+Değişikliklerinizi tarayıcıda anlık olarak görmek ve test etmek için sunucuyu başlatın:
+```bash
+npm run dev
+```
+Tarayıcıda şunları kontrol edin:
+- Eklediğiniz bölüm listede çıkıyor mu?
+- Dersler doğru dönemlerde mi?
+- Okların ve kilitlerin doğru çalışıyor mu?
 
 ---
 
@@ -342,26 +239,7 @@ git commit -m "feat: add Mechanical Engineering (ME) department
 - Added ME curriculum with 8 terms
 - Created meRexxPool3, meRexxPool4 elective pools
 - Integrated with commonTechnicalElectives
-- All courses tested and verified"
+- Verified types pass"
 ```
-
-**Commit Türleri:**
-
-- `feat:` - Yeni özellik (yeni bölüm, yeni havuz)
-- `fix:` - Hata düzeltme
-- `docs:` - Dokümantasyon
-- `refactor:` - Kod iyileştirme
-
----
-
-## 🆘 Yardım
-
-Takıldığınız bir yer mi var?
-
-1. **Mevcut bölümlere bakın:** `data/me.js`, `data/cse.js` gibi dosyalar iyi örneklerdir.
-2. **Issue açın:** GitHub'da soru sorabilirsiniz.
-3. **Pull Request gönderin:** Taslak PR açıp geri bildirim isteyebilirsiniz.
-
----
 
 **Katkılarınız için teşekkürler! 🎉**

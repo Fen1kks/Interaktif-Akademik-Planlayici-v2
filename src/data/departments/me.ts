@@ -1,17 +1,23 @@
+import { Department, CourseOption } from '../../types';
+import { 
+    turkishPool1, turkishPool2, englishPool, programmingPool, commonTechnicalElectives 
+} from '../common';
+import { freeElectives } from '../free-electives';
+
 // REXX4: Electrical
-const meRexxPool4 = [
+const meRexxPool4: CourseOption[] = [
     { id: "ES222", name: "Fund. of EE", credits: 3 },
     { id: "EE211", name: "Circuit Theory", credits: 4 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX5: Econ / Management
-const meRexxPool5 = [
+const meRexxPool5: CourseOption[] = [
     { id: "ECON294", name: "Econ. for Eng.", credits: 3 },
     { id: "ES301", name: "Eng. Manage.", credits: 3 }
 ].sort((a, b) => a.id.localeCompare(b.id));
 
 // REXX6, 7, 8, 9, 10: Technical Electives (Interdisciplinary + ME Core)
-const meTechnicalElectives = [
+const meTechnicalElectives: CourseOption[] = [
     // ME Unique Technicals (Not in Common Pool)
     { id: "ME422", name: "Int. Comb. Eng.", credits: 3 },
     { id: "ME423", name: "Fund. of HVAC", credits: 3 },
@@ -39,10 +45,10 @@ const meTechnicalElectives = [
     { id: "ISE437", name: "Project Mgmt.", credits: 3 },
     { id: "MSN484", name: "Surface Sci. Eng.", credits: 3 },
     // Common Technical Electives (Interdisciplinary + Shared ME)
-    ...window.commonTechnicalElectives
+    ...commonTechnicalElectives
 ].sort((a, b) => a.id.localeCompare(b.id));
 
-window.registerDepartment("ME", {
+export const ME: Department = {
     name: "Mechanical Engineering",
     curriculum: [
       // FRESHMAN - TERM 1
@@ -110,11 +116,11 @@ window.registerDepartment("ME", {
       { id: "HTR302", name: "History of TR II", credits: 2, prereqs: [], term: 8 },
 
       // EXTRA COURSES - TERM 9
-      { id: "EXTRA-1", name: "Extra Course 1", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-2", name: "Extra Course 2", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-3", name: "Extra Course 3", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-4", name: "Extra Course 4", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-5", name: "Extra Course 5", credits: [3, 4, 2], prereqs: [], term: 9 },
-      { id: "EXTRA-6", name: "Extra Course 6", credits: [3, 4, 2], prereqs: [], term: 9 }
+      { id: "EXTRA-1", name: "Extra Course 1", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-2", name: "Extra Course 2", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-3", name: "Extra Course 3", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-4", name: "Extra Course 4", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-5", name: "Extra Course 5", credits: [0, 2, 3, 4], prereqs: [], term: 9 },
+      { id: "EXTRA-6", name: "Extra Course 6", credits: [0, 2, 3, 4], prereqs: [], term: 9 }
     ]
-});
+};

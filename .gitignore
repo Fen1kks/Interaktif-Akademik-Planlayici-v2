@@ -1,0 +1,18 @@
+# Bağımlılıklar
+node_modules/
+
+# Build Çıktıları
+dist/
+dist-ssr/
+
+# Log dosyaları
+*.log
+npm-debug.log*
+
+# İşletim Sistemi Dosyaları
+.DS_Store
+Thumbs.db
+
+# Editör Dosyaları (Opsiyonel ama önerilir)
+.vscode/
+.idea/

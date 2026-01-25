@@ -10,35 +10,35 @@
       gtag('config', 'G-KGC1X2GCY1');
     </script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="google" content="notranslate" />
     <meta name="color-scheme" content="light dark" />
     <meta name="darkreader-lock" />
-    <title>Course Prerequisite Tree & GPA Calculator</title>
-    <link rel="stylesheet" href="theme.css" />
-    <link rel="stylesheet" href="style.css?v=5" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="/pwa-192x192.png">
+    <title>Interactive Academic Planner</title>
+    <link rel="stylesheet" href="/src/assets/styles/theme.css" />
+    <link rel="stylesheet" href="/src/assets/styles/style.css" />
   </head>
   <body>
-
     <header class="stats-bar">
       <div class="brand">
         <div class="department-selector" id="dept-selector">
           <h1 id="dept-title">Department of Mechanical Engineering</h1>
             <svg class="chevron-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-
           <div class="dropdown-menu" id="dept-dropdown"></div>
         </div>
         <span>Academic Planner & GPA Forecaster</span>
       </div>
-
       <div class="stats-footer">
         <div class="controls-group">
           <button
             class="sim-btn"
             id="sim-mode-btn"
             aria-label="Simulation Mode"
-            title="Simulation Mode"
-          >
+            title="Simulation Mode">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -49,8 +49,7 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-calculator"
-            >
+              class="lucide lucide-calculator">
               <rect width="16" height="20" x="4" y="2" rx="2" />
               <line x1="8" x2="16" y1="6" y2="6" />
               <line x1="16" x2="16" y1="14" y2="18" />
@@ -67,8 +66,7 @@
             class="reset-btn"
             id="reset-btn-mobile"
             aria-label="Reset All Data"
-            title="Reset All Data"
-          >
+            title="Reset All Data">
             <svg
               viewBox="0 0 24 24"
               width="24"
@@ -77,20 +75,17 @@
               stroke-width="2"
               fill="none"
               stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+              stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6"></polyline>
               <path
-                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-              ></path>
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
             </svg>
           </button>
           <button
             class="theme-toggle"
             id="theme-palette-btn"
             aria-label="Change Theme"
-            title="Select Theme"
-          >
+            title="Select Theme">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -101,11 +96,9 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-palette-icon lucide-palette"
-            >
+              class="lucide lucide-palette-icon lucide-palette">
               <path
-                d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"
-              />
+                d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/>
               <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
               <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
               <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
@@ -113,7 +106,6 @@
             </svg>
           </button>
         </div>
-
         <div class="metrics">
           <div class="metric-card">
             <span class="metric-label">Credits</span>
@@ -124,18 +116,14 @@
             <span
               class="metric-value"
               id="gpa-score"
-              style="color: var(--c-primary)"
-              >0.00</span
-            >
+              style="color: var(--c-primary)">0.00</span>
           </div>
         </div>
       </div>
     </header>
-
     <div class="grid-wrapper">
       <main class="curriculum-grid" id="grid-container"></main>
     </div>
-
     <!-- Reset Confirmation Modal -->
     <div id="reset-modal-overlay" class="theme-modal-overlay">
       <div class="theme-modal">
@@ -156,7 +144,6 @@
         </div>
       </div>
     </div>
-
     <!-- Simulation Input Modal -->
     <div id="sim-modal-overlay" class="theme-modal-overlay">
         <div class="theme-modal">
@@ -183,19 +170,54 @@
             </div>
         </div>
     </div>
-
+    <!-- Theme Selection Modal -->
+    <div id="theme-modal-overlay" class="theme-modal-overlay">
+        <div class="theme-modal">
+            <div class="theme-modal-header">
+                <h3>Select Theme</h3>
+                <button class="close-btn" id="close-theme-modal-btn">✕</button>
+            </div>
+            <div class="theme-grid">
+                <div class="theme-option" data-value="light">
+                    <div class="theme-preview" style="background: #f8fafc; border: 2px solid #e2e8f0;">
+                        <div style="color: #4083c5;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41-1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                        </div>
+                    </div>
+                    <span>Light</span>
+                </div>
+                <div class="theme-option" data-value="dark">
+                    <div class="theme-preview" style="background: #1a1b26; border: 2px solid #414868;">
+                        <div style="color: #7aa2f7;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                        </div>
+                    </div>
+                    <span>Dark</span>
+                </div>
+                <div class="theme-option" data-value="rose">
+                    <div class="theme-preview" style="background: #fff0f5; border: 2px solid #fbcfe8;">
+                        <div style="color: #881337;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        </div>
+                    </div>
+                    <span>Rose</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Attribution -->
+    <div class="attribution">
+        <div>Created by <span class="author-name">Hızır Ketenci</span></div>
+        <a href="https://donate.bynogame.com/fen1kks" target="_blank" style="text-decoration: none; pointer-events: auto;">
+            <div class="donate-btn">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                ByNoGame ile Destekle
+            </div>
+        </a>
+    </div>
     <!-- Scripts -->
-    <script src="theme.js"></script>
-    <script src="data/z_common.js?v=1"></script>
-    <script src="data/z_registry.js?v=3"></script>
-    <script src="data/bme.js?v=3"></script>
-    <script src="data/chbe.js?v=3"></script>
-    <script src="data/cse.js?v=3"></script>
-    <script src="data/ee.js?v=3"></script>
-    <script src="data/gbe.js?v=3"></script>
-    <script src="data/ise.js?v=3"></script>
-    <script src="data/me.js?v=3"></script>
-    <script src="data/msn.js?v=3"></script>
-    <script src="script.js?v=4"></script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
