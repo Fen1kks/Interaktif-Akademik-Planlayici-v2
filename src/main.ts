@@ -3,7 +3,7 @@ import { ThemeManager } from './utils/theme';
 import { scheduleDrawArrows, showNotification } from './utils/visuals';
 import { isLocked, calculateMetrics, GRADES, getSimulationCandidates, calculateSimulationGrades } from './utils/logic';
 import { Course } from './types';
-import { currentLang, t, getCourseName, getDepartmentName, setupLanguageButton, updateGlobalTranslations } from './i18n';
+import { currentLang, t, tPopup, getCourseName, getDepartmentName, setupLanguageButton, updateGlobalTranslations } from './i18n';
 import { parseTranscript } from './utils/transcript-parser';
 
 // DOM Elements
@@ -115,26 +115,18 @@ function initSystem() {
     
     // Privacy Modal Text Elements
     const privacyTitle = document.getElementById("privacy-title") as HTMLHeadingElement;
-    const privacyTextTr = document.getElementById("privacy-text-tr") as HTMLParagraphElement;
-    const privacyTextEn = document.getElementById("privacy-text-en") as HTMLParagraphElement;
+    const privacyText = document.getElementById("privacy-text") as HTMLParagraphElement;
+    const privacyWarning = document.getElementById("privacy-warning") as HTMLParagraphElement;
 
     if (importBtn && transcriptInput && privacyModal) {
         // Open Modal
         importBtn.addEventListener("click", () => {
              // Dynamic Language Update
-             if (currentLang === 'tr') {
-                 if (privacyTitle) privacyTitle.textContent = "Gizlilik Uyarısı";
-                 if (privacyTextTr) privacyTextTr.style.display = "block";
-                 if (privacyTextEn) privacyTextEn.style.display = "none";
-                 if (cancelPrivacyBtn) cancelPrivacyBtn.textContent = "İptal";
-                 if (confirmPrivacyBtn) confirmPrivacyBtn.textContent = "Dosya Seç";
-             } else {
-                 if (privacyTitle) privacyTitle.textContent = "Privacy Notice";
-                 if (privacyTextTr) privacyTextTr.style.display = "none";
-                 if (privacyTextEn) privacyTextEn.style.display = "block";
-                 if (cancelPrivacyBtn) cancelPrivacyBtn.textContent = "Cancel";
-                 if (confirmPrivacyBtn) confirmPrivacyBtn.textContent = "Select File";
-             }
+             if (privacyTitle) privacyTitle.textContent = tPopup("privacyTitle");
+             if (privacyText) privacyText.textContent = tPopup("privacyText");
+             if (privacyWarning) privacyWarning.textContent = tPopup("privacyWarning");
+             if (cancelPrivacyBtn) cancelPrivacyBtn.textContent = tPopup("cancel");
+             if (confirmPrivacyBtn) confirmPrivacyBtn.textContent = tPopup("selectFile");
              
              privacyModal.style.display = "flex";
         });
@@ -173,6 +165,11 @@ function initSystem() {
                     );
                     return;
                 }
+
+                // CLEAR EXISTING STATE BEFORE IMPORT
+                // This ensures transcript data is the source of truth
+                state = {};
+                saveState();
 
                 // Group results by course ID to handle duplicates (FF -> retake scenarios)
                 const courseMap = new Map<string, {course: Course, grade: string, optionIndex?: number}>();

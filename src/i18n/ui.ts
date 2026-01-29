@@ -41,6 +41,10 @@ export const popupTranslations: Record<string, { en: string; tr: string }> = {
   rose: { en: "Rose", tr: "Gül" },
   
   // Privacy Modal
+  privacyTitle: { en: "Privacy Notice", tr: "Gizlilik Uyarısı" },
+  privacyText: { en: "Your transcript is processed entirely within your browser and is never uploaded to any server.", tr: "Transkriptiniz sadece bu tarayıcıda işlenir ve asla sunucuya yüklenmez (Client-Side Only)." },
+  privacyWarning: { en: "⚠️ Your current data will be cleared and replaced with transcript data.", tr: "⚠️ Yaptığınız değişiklikler silinip yerine transkript esas alınacaktır." },
+  selectFile: { en: "Select File", tr: "Dosya Seç" },
   downloadTranscript: { en: "Download Transcript", tr: "Transkript İndir" },
   recommended: { en: "Recommended", tr: "Tercih Edilen" }
 };

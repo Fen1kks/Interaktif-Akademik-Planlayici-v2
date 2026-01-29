@@ -173,26 +173,26 @@
     <div id="privacy-modal-overlay" class="theme-modal-overlay">
       <div class="theme-modal">
         <div class="theme-modal-header">
-          <h3 id="privacy-title">Gizlilik Uyarısı / Privacy Notice</h3>
+          <h3 id="privacy-title">Privacy Notice</h3>
           <button class="close-btn" id="close-privacy-modal-btn">✕</button>
         </div>
         <div style="color: var(--c-text-main); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5;">
-          <p id="privacy-text-tr" style="margin-bottom: 0.5rem;">
-            Transkriptiniz sadece bu tarayıcıda işlenir ve asla sunucuya yüklenmez (Client-Side Only).
-          </p>
-          <p id="privacy-text-en" style="color: var(--c-text-muted); font-size: 0.85rem;">
+          <p id="privacy-text" style="margin-bottom: 0.5rem;">
             Your transcript is processed entirely within your browser and is never uploaded to any server.
+          </p>
+          <p id="privacy-warning" style="margin-bottom: 0.5rem; color: var(--c-warning, #f59e0b); font-weight: 600; font-size: 0.9rem;">
+            ⚠️ Your current data will be cleared and replaced with transcript data.
           </p>
           <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--c-border);">
             <p id="download-transcript-label" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem;">
-              📥 Transkript İndir / Download Transcript:
+              📥 Download Transcript:
             </p>
             <ul style="font-size: 0.8rem; line-height: 1.6; padding-left: 1.2rem; margin: 0;">
               <li>
                 <a href="https://a7.yeditepe.edu.tr/student/documents" target="_blank" style="color: var(--c-primary); text-decoration: none;">
                   A7 Yeditepe
                 </a>
-                <span id="recommended-tag" style="font-size: 0.75rem; color: var(--c-text-muted); margin-left: 4px;">(Tercih Edilen)</span>
+                <span id="recommended-tag" style="font-size: 0.75rem; color: var(--c-text-muted); margin-left: 4px;">(Recommended)</span>
               </li>
               <li>
                 <a href="https://www.turkiye.gov.tr/yuksekogretim-kurulu-transkript-belgesi-sorgulama" target="_blank" style="color: var(--c-primary); text-decoration: none;">
@@ -204,10 +204,10 @@
         </div>
         <div class="modal-actions">
           <button class="modal-btn cancel" id="cancel-privacy-btn">
-            İptal / Cancel
+            Cancel
           </button>
           <button class="modal-btn confirm" id="confirm-privacy-btn" style="background: var(--c-primary);">
-            Dosya Seç / Select File
+            Select File
           </button>
         </div>
       </div>
