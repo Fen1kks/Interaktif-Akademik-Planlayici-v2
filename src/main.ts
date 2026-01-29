@@ -167,8 +167,8 @@ function initSystem() {
                     return;
                 }
 
-                let updatedCount = 0;
-                const assignedIds = new Set<string>();
+                // Group results by course ID to handle duplicates (FF -> retake scenarios)
+                const courseMap = new Map<string, {course: Course, grade: string, optionIndex?: number}>();
 
                 results.forEach(parsed => {
                     const cleanId = parsed.id.replace(/\s+/g, ""); 
@@ -187,31 +187,32 @@ function initSystem() {
                             c.options && c.options.some(opt => opt.id.replace(/\s+/g, "").toUpperCase() === upperId)
                         );
                         
-                        // Select the best candidate (first one that hasn't been assigned IN THIS BATCH)
-                        // We also prioritize slots that are empty in the current state to avoid overwriting if possible,
-                        // but if all empty slots are taken, we overwrite.
+                        // Select the best candidate (first one that hasn't been processed IN THIS BATCH)
                         for (const cand of candidates) {
-                             if (!assignedIds.has(cand.id)) {
+                             if (!courseMap.has(cand.id)) {
                                   // Found a slot!
                                   targetCourse = cand;
                                   selectedOptionIndex = cand.options!.findIndex(opt => opt.id.replace(/\s+/g, "").toUpperCase() === upperId);
                                   break;
                              }
                         }
-                    } else if (targetCourse.options) {
-                        // Direct match but has options (unlikely but possible if ID matches option ID or course ID matches option ID?)
-                        // Safe to proceed as direct match usually.
-                        // But if it's a generic holder like "REXX1" it wouldn't match "AFEA111" directly.
                     }
                     
                     if (targetCourse) {
-                        // Avoid double updating same course in same batch
-                        if (!assignedIds.has(targetCourse.id)) {
-                             updateState(targetCourse.id, true, parsed.grade, true, selectedOptionIndex); 
-                             assignedIds.add(targetCourse.id);
-                             updatedCount++;
-                        }
+                        // Store/Update with latest grade (last occurrence wins)
+                        courseMap.set(targetCourse.id, {
+                            course: targetCourse,
+                            grade: parsed.grade,
+                            optionIndex: selectedOptionIndex
+                        });
                     }
+                });
+
+                // Apply all updates
+                let updatedCount = 0;
+                courseMap.forEach(({course, grade, optionIndex}) => {
+                    updateState(course.id, true, grade, true, optionIndex);
+                    updatedCount++;
                 });
 
                 if (updatedCount > 0) {
