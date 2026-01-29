@@ -15,19 +15,30 @@ export interface ParsedCourse {
  */
 function normalizeText(text: string): string {
     return text
-        .replace(/Μ/g, "M")
-        .replace(/Ε/g, "E")
-        .replace(/Β/g, "B")
-        .replace(/Ι/g, "I")
-        .replace(/Ο/g, "O")
         .replace(/Α/g, "A")
-        .replace(/Τ/g, "T")
+        .replace(/Β/g, "B")
+        .replace(/Γ/g, "G")
+        .replace(/Δ/g, "D")
+        .replace(/Ε/g, "E")
+        .replace(/Ζ/g, "Z")
         .replace(/Η/g, "H")
+        .replace(/Θ/g, "TH")
+        .replace(/Ι/g, "I")
         .replace(/Κ/g, "K")
-        .replace(/Ρ/g, "P")
-        .replace(/Χ/g, "X")
+        .replace(/Λ/g, "L")
+        .replace(/Μ/g, "M")
+        .replace(/Ν/g, "N")
+        .replace(/Ξ/g, "X")
+        .replace(/Ο/g, "O")
+        .replace(/Π/g, "P")
+        .replace(/Ρ/g, "R")
+        .replace(/Σ/g, "S")
+        .replace(/Τ/g, "T")
         .replace(/Υ/g, "Y")
-        .replace(/Ζ/g, "Z");
+        .replace(/Φ/g, "F")
+        .replace(/Χ/g, "X")
+        .replace(/Ψ/g, "PS")
+        .replace(/Ω/g, "O");
 }
 
 /**
@@ -59,30 +70,34 @@ async function extractTextFromPDF(file: File): Promise<string> {
 function parseEDevletFormat(text: string): ParsedCourse[] {
     const results: ParsedCourse[] = [];
     const normalized = normalizeText(text);
-
-    // Regex for e-Devlet format:
-    // [Course Code] [Course Name] ... [Grade]
-    // Example: ME 101 Calculus 4.0 AA
-    // Matches: Start with 2-4 uppercase letters, space, 3 digits (Course Code)
-    // Then arbitrary text
-    // Ends with valid Letter Grade (AA, BA, BB, CB, CC, DC, DD, FD, FF)
-    // Note: We need to be careful not to capture intermediate text as grade if possible, 
-    // but the end-of-line anchor isn't reliable in raw PDF text extraction which often joins lines.
-    // So we iterate over "tokens" or look for patterns.
     
-    // Better strategy for raw text which might be unstructured:
-    // Look for pattern: ([A-Z]{2,4}\s*\d{3}).*?(AA|BA|BB|CB|CC|DC|DD|FD|FF)
-    // extracting all matches. Global flag.
-    const regex = /\b([A-Z]{2,4}\s*\d{3})\b.*?\b(AA|BA|BB|CB|CC|DC|DD|FD|FF)\b/g;
+    // Regex for e-Devlet format
+    const regex = /\b([A-Z]{2,4}\s*\d{3})\b.*?\b(AA|BA|BB|CB|CC|DC|DD|FD|FF)(?:\([A-Z,\s]+\))?/g;
     
     let match;
     while ((match = regex.exec(normalized)) !== null) {
-        // match[1] is Course Code (e.g., ME 101)
-        // match[2] is Grade (e.g., AA)
-        let id = match[1].replace(/\s+/g, " ").trim(); // Normalize spaces in ID
-        const grade = match[2];
+        let courseId = match[1].replace(/\s+/g, " ").trim();
+        let grade = match[2];
+        const matchText = match[0];
         
-        results.push({ id, grade });
+        // --- SWALLOW PROTECTION ---
+        const idLength = match[1].length; 
+        const contentAfterId = matchText.substring(matchText.indexOf(match[1]) + idLength);
+        const nestedIdMatch = contentAfterId.match(/\b([A-Z]{2,4}\s*\d{3})\b/);
+        
+        if (nestedIdMatch) {
+            console.warn(`⚠️ E-DEVLET SWALLOW DETECTED: "${courseId}" swallowed "${nestedIdMatch[1]}" with grade "${grade}". Recovering...`);
+            
+            const nestedIdOffset = contentAfterId.indexOf(nestedIdMatch[0]);
+            const contentAfterIdStartIndex = matchText.indexOf(match[1]) + idLength;
+            const newIndex = match.index + contentAfterIdStartIndex + nestedIdOffset;
+            
+            regex.lastIndex = newIndex;
+            continue;
+        }
+        // ---------------------------
+
+        results.push({ id: courseId, grade });
     }
     
     return results;
@@ -96,23 +111,36 @@ function parseSchoolFormat(text: string): ParsedCourse[] {
     const results: ParsedCourse[] = [];
     const normalized = normalizeText(text);
     
-    // OBS often has weird spacing or table structures.
-    // Strategy: Look for "Code" and "Grade" closer together or just key patterns.
-    // Similar regex but maybe less strict on what's in between, or handling multiple variations.
-    // However, the prompt suggests: "Find Course Code, then find Grade. Ensure valid grade."
-    
-    // We will use a similar regex but allows for Uppercase in course names.
-    // Course Code followed by anything (non-greedy) until a Grade found.
-    // Update: Allow multiple spaces between code and number (e.g. PHYS   101)
-    // Update: Use word boundaries \b to ensure we match "AA" and not "SAA" or "BABA"
-    // Update: Use word boundaries \b around course code to avoid matching years like "2024" as "202"
-    const regex = /\b([A-Z]{2,4}\s*\d{3})\b.*?\b(AA|BA|BB|CB|CC|DC|DD|FD|FF)\b/g;
+    // Regex for School/OBS format (word boundary removed at the end)
+    const regex = /\b([A-Z]{2,4}\s*\d{3})\b.*?\b(AA|BA|BB|CB|CC|DC|DD|FD|FF)(?:\([A-Z,\s]+\))?/g;
     
     let match;
     while ((match = regex.exec(normalized)) !== null) {
+        let courseId = match[1].replace(/\s+/g, " ").trim();
+        let grade = match[2];
+        const matchText = match[0];
+        
+        // --- SWALLOW PROTECTION ---
+        // Check if there is another course code INSIDE the matched text (between ID and Grade)
+        const idLength = match[1].length; 
+        const contentAfterId = matchText.substring(matchText.indexOf(match[1]) + idLength);
+        const nestedIdMatch = contentAfterId.match(/\b([A-Z]{2,4}\s*\d{3})\b/);
+        
+        if (nestedIdMatch) {
+            console.warn(`⚠️ Transcript Parser: "${courseId}" swallowed "${nestedIdMatch[1]}" with grade "${grade}". Recovering...`);
+            
+            const nestedIdOffset = contentAfterId.indexOf(nestedIdMatch[0]);
+            const contentAfterIdStartIndex = matchText.indexOf(match[1]) + idLength;
+            const newIndex = match.index + contentAfterIdStartIndex + nestedIdOffset;
+            
+            regex.lastIndex = newIndex;
+            continue;
+        }
+        // ---------------------------
+        
         results.push({
-            id: match[1].replace(/\s+/g, " ").trim(),
-            grade: match[2]
+            id: courseId,
+            grade: grade 
         });
     }
 

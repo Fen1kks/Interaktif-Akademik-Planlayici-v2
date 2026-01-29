@@ -149,13 +149,18 @@ function initSystem() {
             const file = (e.target as HTMLInputElement).files?.[0];
             if (!file) return;
 
-            try {
+                try {
                 const results = await parseTranscript(file);
                 
-                // Filter out NC/W grades (withdrawn/no credit courses)
+                // Filter out invalid/non-grade entries that shouldn't affect GPA:
+                // NC (No Credit), W (Withdrawn), I (Incomplete), P (Pass), 
+                // X (In Progress), T (Transfer), ND (Not Determined), 
+                // R (Repeat), L (Leave), RR (Repeat Registration)
+                // Note: These are already filtered in the parser if they appear in parentheses (e.g., AA(R))
+                const invalidGrades = ['NC', 'W', 'I', 'P', 'X', 'T', 'ND', 'R', 'L', 'RR'];
                 const validResults = results.filter(r => {
                     const grade = r.grade.toUpperCase();
-                    return grade !== 'NC' && grade !== 'W';
+                    return !invalidGrades.includes(grade);
                 });
                 
                 if (validResults.length === 0) {

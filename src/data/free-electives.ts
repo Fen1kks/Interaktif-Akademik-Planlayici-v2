@@ -104,6 +104,7 @@ export const freeElectives: CourseOption[] = [
     { id: "ARCH447", name: "Urban Renewal", credits: 3 },
     { id: "ARCH471", name: "Turkish Arch", credits: 3 },
     { id: "ARCH472", name: "Stone Conserv.", credits: 3 },
+    { id: "BBA102", name: "Fund. of Mgmt", credits: 3 },
     { id: "COMM101", name: "Intro to Comm", credits: 3 },
     { id: "COMM102", name: "Media History", credits: 3 },
     { id: "COMM110", name: "Presentation", credits: 3 },
